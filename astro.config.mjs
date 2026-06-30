@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://indiga.dj',
+  site: 'https://indiga.vercel.app',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
