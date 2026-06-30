@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import hero from '../assets/img/hero.jpg';
+---
+
+<section class="relative min-h-dvh overflow-hidden">
+  <Image
+    src={hero}
+    alt=""
+    class="absolute inset-0 -z-10 h-full w-full object-cover md:object-[center_25%]"
+    loading="eager"
+    widths={[640, 1024, 1600, 2400]}
+    sizes="100vw"
+  />
+  <div
+    class="absolute inset-0 -z-10"
+    style="background: linear-gradient(180deg, rgba(8,8,15,0.45) 0%, rgba(8,8,15,0.15) 35%, rgba(8,8,15,0.85) 100%);"
+  >
+  </div>
+
+  <header
+    class="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-12"
+  >
+    <p
+      class="text-xs md:text-sm font-bold uppercase leading-tight tracking-tight"
+    >
+      Feel what I<br />hear.
+    </p>
+    <h1
+      class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight"
+    >
+      INDIGA
+    </h1>
+  </header>
+
+  <footer
+    class="absolute bottom-0 right-0 p-6 md:p-12 text-right text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]"
+  >
+    Presskit<br />2026
+  </footer>
+</section>

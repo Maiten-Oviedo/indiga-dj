@@ -1,0 +1,78 @@
+---
+const venues = ['Club Paraguay', 'Europa', 'Negroni', 'Black Sheep'];
+const artists = [
+  'Perception (Brasil)',
+  'Wav3motion (Brasil)',
+  'Julianna Gella',
+  'Delcha',
+  'Zlata',
+];
+---
+
+<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <img
+    src="/img/radio-01.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    class="pointer-events-none absolute -right-12 top-16 -z-0 w-72 brightness-0 invert opacity-[0.06] md:-right-20 md:top-24 md:w-[28rem]"
+  />
+
+  <p
+    class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
+  >
+    04 — Trayectoria
+  </p>
+  <h2
+    class="relative mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
+  >
+    Espacios y voces<br />compartidas.
+  </h2>
+  <p
+    class="relative mt-12 max-w-2xl text-base md:text-lg leading-relaxed text-white/80"
+  >
+    Su criterio musical parte de una premisa simple: compartir aquellos sonidos
+    que la atraviesan personalmente y transformar esa experiencia en un
+    lenguaje colectivo dentro de la pista. Para INDIGA, la conexión con el
+    público nace cuando una misma frecuencia logra resonar en distintas
+    personas al mismo tiempo.
+  </p>
+
+  <div
+    class="relative mt-20 grid grid-cols-1 gap-12 border-t border-white/10 pt-16 md:grid-cols-2 md:gap-16"
+  >
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+        Cabinas
+      </p>
+      <ul class="mt-6 space-y-3">
+        {
+          venues.map((v) => (
+            <li class="font-serif text-2xl md:text-3xl">{v}</li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="relative">
+      <img
+        src="/img/stars-01.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        class="pointer-events-none absolute -right-8 -top-16 -z-0 w-44 brightness-0 invert opacity-[0.08] md:-right-12 md:-top-20 md:w-60"
+      />
+      <p
+        class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/40"
+      >
+        Compartió cabina
+      </p>
+      <ul class="relative mt-6 space-y-3">
+        {
+          artists.map((a) => (
+            <li class="font-serif text-2xl md:text-3xl">{a}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

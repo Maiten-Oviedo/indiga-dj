@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/img/portrait-02.jpg';
+---
+
+<section class="relative grid min-h-dvh grid-cols-1 overflow-hidden md:grid-cols-2">
+  <img
+    src="/img/auris-01.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    class="pointer-events-none absolute right-0 top-1/4 -z-0 w-80 brightness-0 invert opacity-[0.06] md:-right-12 md:w-[32rem]"
+  />
+  <div class="relative order-2 min-h-[60vh] md:order-1 md:min-h-dvh">
+    <Image
+      src={portrait}
+      alt="INDIGA"
+      class="absolute inset-0 h-full w-full object-cover"
+      widths={[640, 1024, 1600]}
+      sizes="(min-width: 768px) 50vw, 100vw"
+      loading="lazy"
+    />
+  </div>
+  <div
+    class="relative order-1 flex flex-col justify-center gap-8 p-8 md:order-2 md:p-16 lg:p-24"
+  >
+    <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/50">
+      02 — Sonido
+    </p>
+    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
+      Una narrativa<br />en evolución.
+    </h2>
+    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
+      Influenciada por el psytrance, el trance, el hard dance y el techno,
+      construye recorridos que alternan momentos hipnóticos, melodías
+      envolventes y descargas de energía. Cada set nace de una búsqueda
+      personal por encontrar sonidos y frecuencias capaces de generar una
+      respuesta emocional.
+    </p>
+    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
+      Más que responder a un género específico, sus selecciones buscan
+      transmitir sensaciones y mantener una narrativa en constante evolución.
+    </p>
+  </div>
+</section>

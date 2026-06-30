@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import live01 from '../assets/img/live-01.jpg';
+import live02 from '../assets/img/live-02.jpg';
+import live03 from '../assets/img/live-03.jpg';
+import live04 from '../assets/img/live-04.jpg';
+import live05 from '../assets/img/live-05.jpg';
+import live06 from '../assets/img/live-06.jpg';
+import live07 from '../assets/img/live-07.jpg';
+import live08 from '../assets/img/live-08.jpg';
+
+const shots = [live01, live02, live03, live04, live05, live06, live07, live08];
+---
+
+<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <div class="relative mb-16 md:mb-24">
+    <img
+      src="/img/stars-02.png"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="pointer-events-none absolute -left-4 -top-8 -z-0 w-56 brightness-0 invert opacity-[0.08] md:-left-12 md:-top-16 md:w-80"
+    />
+    <p
+      class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
+    >
+      03 — En cabina
+    </p>
+    <h2
+      class="relative mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
+    >
+      La pista<br />como lenguaje.
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+    {
+      shots.map((shot, i) => (
+        <div
+          class:list={[
+            'group relative overflow-hidden',
+            i === 0 || i === 5
+              ? 'col-span-2 row-span-2 aspect-square'
+              : 'aspect-[4/5]',
+          ]}
+        >
+          <Image
+            src={shot}
+            alt=""
+            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            widths={[400, 800, 1200]}
+            sizes="(min-width: 768px) 25vw, 50vw"
+            loading="lazy"
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>
