@@ -85,10 +85,23 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
     const widget = w.SC.Widget(iframe);
     let playing = false;
-    // SoundCloud en iOS dispara PLAY y ~900ms después larga 1-2 PAUSE
-    // espurios mientras hace seek/buffer. Los ignoramos por 1500ms
-    // a partir del último PLAY recibido.
     let ignorePausesUntil = 0;
+    let playedAt = 0;
+
+    // --- OVERLAY DE DEBUG ---
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;max-height:50vh;overflow-y:auto;background:rgba(0,0,0,0.88);color:#0f0;font:11px/1.5 monospace;padding:6px 8px;z-index:99999;pointer-events:none;white-space:pre-wrap;word-break:break-all;';
+    document.body.appendChild(overlay);
+    const t0 = performance.now();
+    const log = (...args: any[]) => {
+      const t = (performance.now() - t0).toFixed(0);
+      const line = `+${t}ms ` + args.map((a) => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+      console.log('[SC]', line);
+      const el = document.createElement('div'); el.textContent = line;
+      overlay.appendChild(el); overlay.scrollTop = overlay.scrollHeight;
+    };
+    log('init');
+    // --- FIN OVERLAY ---
 
     const setPlayingUI = () => {
       button.setAttribute('aria-label', 'Pausar set');
@@ -117,6 +130,7 @@ const encodedUrl = encodeURIComponent(trackUrl);
     });
 
     button.addEventListener('click', () => {
+      log('CLICK playing:', playing);
       if (playing) {
         widget.pause();
         return;
@@ -126,18 +140,25 @@ const encodedUrl = encodeURIComponent(trackUrl);
     });
 
     widget.bind(w.SC.Widget.Events.PLAY, () => {
+      playedAt = performance.now();
       playing = true;
-      ignorePausesUntil = performance.now() + 1500;
+      ignorePausesUntil = playedAt + 1500;
+      log('PLAY (ignorando PAUSEs por 1500ms)');
       setPlayingUI();
     });
 
     widget.bind(w.SC.Widget.Events.PAUSE, () => {
-      if (performance.now() < ignorePausesUntil) return;
+      const now = performance.now();
+      const sincePlay = (now - playedAt).toFixed(0);
+      const ignored = now < ignorePausesUntil;
+      log('PAUSE +' + sincePlay + 'ms desde PLAY | ignorado:', ignored);
+      if (ignored) return;
       playing = false;
       setPausedUI();
     });
 
     widget.bind(w.SC.Widget.Events.FINISH, () => {
+      log('FINISH');
       playing = false;
       ignorePausesUntil = 0;
       setPausedUI();
