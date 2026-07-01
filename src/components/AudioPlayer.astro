@@ -54,7 +54,7 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
   <span
     id="audio-label"
-    class="pointer-events-none absolute right-full top-1/2 mr-4 hidden max-w-[16rem] -translate-y-1/2 truncate whitespace-nowrap font-serif text-sm text-white/70 opacity-0 transition-opacity duration-300 md:block"
+    class="pointer-events-none absolute right-full top-1/2 mr-4 max-w-[16rem] -translate-y-1/2 truncate whitespace-nowrap font-serif text-sm text-white/70 opacity-0 transition-opacity duration-300"
   >
     Escuchar set
   </span>
@@ -120,6 +120,8 @@ const encodedUrl = encodeURIComponent(trackUrl);
       }
     });
 
+    let firstPlay = true;
+
     widget.bind(w.SC.Widget.Events.PLAY, () => {
       if (!primed) {
         // Este es el play de calentamiento — pausamos de inmediato
@@ -129,6 +131,15 @@ const encodedUrl = encodeURIComponent(trackUrl);
       }
       playing = true;
       setPlayingUI();
+      // En mobile, mostrar el nombre 2s en el primer play real
+      if (firstPlay && window.innerWidth < 768 && label) {
+        firstPlay = false;
+        label.classList.add('opacity-100');
+        setTimeout(() => {
+          if (!playing) return; // si ya pausó, setPlayingUI/setPausedUI lo maneja
+          label.classList.remove('opacity-100');
+        }, 2000);
+      }
     });
 
     widget.bind(w.SC.Widget.Events.PAUSE, () => {
