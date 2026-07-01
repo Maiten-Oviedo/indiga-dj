@@ -136,8 +136,8 @@ const encodedUrl = encodeURIComponent(trackUrl);
         firstPlay = false;
         label.classList.add('opacity-100');
         setTimeout(() => {
-          if (!playing) return; // si ya pausó, setPlayingUI/setPausedUI lo maneja
-          label.classList.remove('opacity-100');
+          label!.classList.remove('opacity-100');
+          label!.classList.add('opacity-0');
         }, 2000);
       }
     });
