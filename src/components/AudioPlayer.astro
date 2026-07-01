@@ -85,8 +85,10 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
     const widget = w.SC.Widget(iframe);
     let playing = false;
-    let hasPlayedSuccessfully = false;
-    let expectingPlay = false;
+    // SoundCloud en iOS dispara PLAY y ~900ms después larga 1-2 PAUSE
+    // espurios mientras hace seek/buffer. Los ignoramos por 1500ms
+    // a partir del último PLAY recibido.
+    let ignorePausesUntil = 0;
 
     const setPlayingUI = () => {
       button.setAttribute('aria-label', 'Pausar set');
@@ -116,36 +118,28 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
     button.addEventListener('click', () => {
       if (playing) {
-        expectingPlay = false;
         widget.pause();
         return;
       }
-      expectingPlay = true;
       setPlayingUI();
       widget.play();
-      if (!hasPlayedSuccessfully) {
-        setTimeout(() => {
-          if (!playing) widget.play();
-        }, 700);
-      }
     });
 
     widget.bind(w.SC.Widget.Events.PLAY, () => {
       playing = true;
-      hasPlayedSuccessfully = true;
-      expectingPlay = false;
+      ignorePausesUntil = performance.now() + 1500;
       setPlayingUI();
     });
 
     widget.bind(w.SC.Widget.Events.PAUSE, () => {
+      if (performance.now() < ignorePausesUntil) return;
       playing = false;
-      if (expectingPlay) return;
       setPausedUI();
     });
 
     widget.bind(w.SC.Widget.Events.FINISH, () => {
       playing = false;
-      expectingPlay = false;
+      ignorePausesUntil = 0;
       setPausedUI();
     });
 
