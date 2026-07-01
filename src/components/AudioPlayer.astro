@@ -129,6 +129,32 @@ const encodedUrl = encodeURIComponent(trackUrl);
       });
     });
 
+    // En iOS el audio dentro de un iframe solo se desbloquea si el
+    // iframe recibe directamente el gesto del usuario. Antes del primer
+    // play solapamos el iframe sobre el botón para que el tap lo active.
+    let unlocked = false;
+
+    const positionIframeOverButton = () => {
+      const r = button.getBoundingClientRect();
+      iframe.style.cssText = [
+        'position:fixed',
+        `top:${r.top}px`, `left:${r.left}px`,
+        `width:${r.width}px`, `height:${r.height}px`,
+        'opacity:0.01', // casi invisible pero interactuable
+        'pointer-events:auto',
+        'z-index:49', // justo debajo del botón (z-50)
+        'border:none',
+      ].join(';');
+      log('iframe solapado sobre botón');
+    };
+
+    const hideIframe = () => {
+      iframe.style.cssText = 'position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none;border:none;';
+    };
+
+    // Pre-posicionar el iframe para que el primer tap lo active
+    positionIframeOverButton();
+
     button.addEventListener('click', () => {
       log('CLICK playing:', playing);
       if (playing) {
@@ -137,6 +163,12 @@ const encodedUrl = encodeURIComponent(trackUrl);
       }
       setPlayingUI();
       widget.play();
+      log('play() llamado');
+      // Tras el primer play, escondemos el iframe (ya no necesita gestos directos)
+      if (!unlocked) {
+        unlocked = true;
+        setTimeout(hideIframe, 2000);
+      }
     });
 
     widget.bind(w.SC.Widget.Events.PLAY, () => {
