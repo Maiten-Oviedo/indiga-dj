@@ -3,12 +3,14 @@ const trackUrl = 'https://soundcloud.com/celess-454571330';
 const encodedUrl = encodeURIComponent(trackUrl);
 ---
 
+<!-- DESKTOP: botón flotante custom con API invisible -->
 <div
   id="audio-player"
   class="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8"
 >
+  <!-- iframe oculto solo para desktop (API) -->
   <iframe
-    id="sc-player"
+    id="sc-player-desktop"
     class="pointer-events-none fixed opacity-0"
     style="width: 1px; height: 1px; left: -9999px; top: -9999px;"
     scrolling="no"
@@ -60,22 +62,91 @@ const encodedUrl = encodeURIComponent(trackUrl);
   </span>
 </div>
 
+<!-- MOBILE: player nativo de SC, oculto por defecto -->
+<div
+  id="sc-mobile-panel"
+  class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-300 ease-in-out md:hidden"
+>
+  <div class="bg-[var(--color-night)]/95 backdrop-blur-md px-4 pt-3 pb-6 shadow-2xl">
+    <!-- handle + close -->
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-serif text-sm text-white/60">Escuchar set</span>
+      <button
+        id="sc-mobile-close"
+        type="button"
+        class="text-white/50 hover:text-white transition-colors"
+        aria-label="Cerrar player"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+    <iframe
+      id="sc-player-mobile"
+      scrolling="no"
+      frameborder="no"
+      allow="autoplay"
+      title="INDIGA — SoundCloud player mobile"
+      style="width:100%;height:166px;"
+      src={`https://w.soundcloud.com/player/?url=${encodedUrl}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_teaser=false&visual=false&show_artwork=true&color=%23ffffff`}
+    ></iframe>
+  </div>
+</div>
+
 <script src="https://w.soundcloud.com/player/api.js" is:inline></script>
 
 <script>
-  function initAudioPlayer() {
+  const isMobile = () => window.innerWidth < 768;
+
+  // ── MOBILE ──────────────────────────────────────────────
+  function initMobile() {
+    const button = document.getElementById('audio-toggle') as HTMLButtonElement | null;
+    const panel = document.getElementById('sc-mobile-panel') as HTMLElement | null;
+    const closeBtn = document.getElementById('sc-mobile-close') as HTMLButtonElement | null;
+    const playIcon = document.getElementById('audio-play-icon');
+    const pauseIcon = document.getElementById('audio-pause-icon');
+    const ring = document.getElementById('audio-ring');
+
+    if (!button || !panel || !closeBtn) return;
+
+    let open = false;
+
+    const openPanel = () => {
+      open = true;
+      panel.classList.remove('translate-y-full');
+      playIcon?.classList.add('hidden');
+      pauseIcon?.classList.remove('hidden');
+      ring?.classList.add('is-spinning');
+      button.setAttribute('aria-label', 'Cerrar player');
+    };
+
+    const closePanel = () => {
+      open = false;
+      panel.classList.add('translate-y-full');
+      playIcon?.classList.remove('hidden');
+      pauseIcon?.classList.add('hidden');
+      ring?.classList.remove('is-spinning');
+      button.setAttribute('aria-label', 'Reproducir set de INDIGA');
+    };
+
+    button.addEventListener('click', () => {
+      open ? closePanel() : openPanel();
+    });
+
+    closeBtn.addEventListener('click', closePanel);
+  }
+
+  // ── DESKTOP ─────────────────────────────────────────────
+  function initDesktop() {
     const w = window as unknown as { SC?: any };
     if (!w.SC || !w.SC.Widget) {
-      setTimeout(initAudioPlayer, 150);
+      setTimeout(initDesktop, 150);
       return;
     }
 
-    const iframe = document.getElementById(
-      'sc-player'
-    ) as HTMLIFrameElement | null;
-    const button = document.getElementById(
-      'audio-toggle'
-    ) as HTMLButtonElement | null;
+    const iframe = document.getElementById('sc-player-desktop') as HTMLIFrameElement | null;
+    const button = document.getElementById('audio-toggle') as HTMLButtonElement | null;
     const playIcon = document.getElementById('audio-play-icon');
     const pauseIcon = document.getElementById('audio-pause-icon');
     const ring = document.getElementById('audio-ring');
@@ -85,23 +156,9 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
     const widget = w.SC.Widget(iframe);
     let playing = false;
+    // SoundCloud dispara 1-2 PAUSE espurios ~600ms después del PLAY.
+    // Los ignoramos durante 1500ms desde el último PLAY recibido.
     let ignorePausesUntil = 0;
-    let playedAt = 0;
-
-    // --- OVERLAY DE DEBUG ---
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;max-height:50vh;overflow-y:auto;background:rgba(0,0,0,0.88);color:#0f0;font:11px/1.5 monospace;padding:6px 8px;z-index:99999;pointer-events:none;white-space:pre-wrap;word-break:break-all;';
-    document.body.appendChild(overlay);
-    const t0 = performance.now();
-    const log = (...args: any[]) => {
-      const t = (performance.now() - t0).toFixed(0);
-      const line = `+${t}ms ` + args.map((a) => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
-      console.log('[SC]', line);
-      const el = document.createElement('div'); el.textContent = line;
-      overlay.appendChild(el); overlay.scrollTop = overlay.scrollHeight;
-    };
-    log('init');
-    // --- FIN OVERLAY ---
 
     const setPlayingUI = () => {
       button.setAttribute('aria-label', 'Pausar set');
@@ -129,68 +186,28 @@ const encodedUrl = encodeURIComponent(trackUrl);
       });
     });
 
-    // En iOS el audio dentro de un iframe solo se desbloquea si el
-    // iframe recibe directamente el gesto del usuario. Antes del primer
-    // play solapamos el iframe sobre el botón para que el tap lo active.
-    let unlocked = false;
-
-    const positionIframeOverButton = () => {
-      const r = button.getBoundingClientRect();
-      iframe.style.cssText = [
-        'position:fixed',
-        `top:${r.top}px`, `left:${r.left}px`,
-        `width:${r.width}px`, `height:${r.height}px`,
-        'opacity:0.01', // casi invisible pero interactuable
-        'pointer-events:auto',
-        'z-index:49', // justo debajo del botón (z-50)
-        'border:none',
-      ].join(';');
-      log('iframe solapado sobre botón');
-    };
-
-    const hideIframe = () => {
-      iframe.style.cssText = 'position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none;border:none;';
-    };
-
-    // Pre-posicionar el iframe para que el primer tap lo active
-    positionIframeOverButton();
-
     button.addEventListener('click', () => {
-      log('CLICK playing:', playing);
       if (playing) {
         widget.pause();
         return;
       }
       setPlayingUI();
       widget.play();
-      log('play() llamado');
-      // Tras el primer play, escondemos el iframe (ya no necesita gestos directos)
-      if (!unlocked) {
-        unlocked = true;
-        setTimeout(hideIframe, 2000);
-      }
     });
 
     widget.bind(w.SC.Widget.Events.PLAY, () => {
-      playedAt = performance.now();
       playing = true;
-      ignorePausesUntil = playedAt + 1500;
-      log('PLAY (ignorando PAUSEs por 1500ms)');
+      ignorePausesUntil = performance.now() + 1500;
       setPlayingUI();
     });
 
     widget.bind(w.SC.Widget.Events.PAUSE, () => {
-      const now = performance.now();
-      const sincePlay = (now - playedAt).toFixed(0);
-      const ignored = now < ignorePausesUntil;
-      log('PAUSE +' + sincePlay + 'ms desde PLAY | ignorado:', ignored);
-      if (ignored) return;
+      if (performance.now() < ignorePausesUntil) return;
       playing = false;
       setPausedUI();
     });
 
     widget.bind(w.SC.Widget.Events.FINISH, () => {
-      log('FINISH');
       playing = false;
       ignorePausesUntil = 0;
       setPausedUI();
@@ -208,17 +225,17 @@ const encodedUrl = encodeURIComponent(trackUrl);
     });
   }
 
-  initAudioPlayer();
+  if (isMobile()) {
+    initMobile();
+  } else {
+    initDesktop();
+  }
 </script>
 
 <style>
   @keyframes audio-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
   .is-spinning {
     animation: audio-spin 6s linear infinite;
