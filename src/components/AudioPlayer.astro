@@ -62,35 +62,50 @@ const encodedUrl = encodeURIComponent(trackUrl);
   </span>
 </div>
 
-<!-- MOBILE: player nativo de SC, oculto por defecto -->
+<!-- MOBILE: cápsula compacta tipo Spotify -->
 <div
   id="sc-mobile-panel"
-  class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-300 ease-in-out md:hidden"
+  class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-500 ease-in-out md:hidden"
 >
-  <div class="bg-[var(--color-night)]/95 backdrop-blur-md px-4 pt-3 pb-6 shadow-2xl">
-    <!-- handle + close -->
-    <div class="flex items-center justify-between mb-3">
-      <span class="font-serif text-sm text-white/60">Escuchar set</span>
+  <!-- cápsula -->
+  <div class="mx-3 mb-3 overflow-hidden rounded-2xl shadow-2xl" style="background:#1e1b4b;">
+    <!-- barra superior: avatar + título + cerrar -->
+    <div class="flex items-center gap-3 px-4 py-3">
+      <!-- avatar / logo -->
+      <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/10">
+        <svg class="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+      <!-- texto -->
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-semibold text-white leading-tight">INDIGA</p>
+        <p class="truncate text-xs text-white/50 leading-tight">Set completo</p>
+      </div>
+      <!-- cerrar -->
       <button
         id="sc-mobile-close"
         type="button"
-        class="text-white/50 hover:text-white transition-colors"
         aria-label="Cerrar player"
+        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-white/40 transition-colors hover:text-white active:text-white"
       >
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
         </svg>
       </button>
     </div>
-    <iframe
-      id="sc-player-mobile"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay"
-      title="INDIGA — SoundCloud player mobile"
-      style="width:100%;height:166px;"
-      src={`https://w.soundcloud.com/player/?url=${encodedUrl}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_teaser=false&visual=false&show_artwork=true&color=%23ffffff`}
-    ></iframe>
+
+    <!-- iframe SC recortado: solo se muestra la barra de progreso + controles -->
+    <div class="sc-iframe-crop">
+      <iframe
+        id="sc-player-mobile"
+        scrolling="no"
+        frameborder="no"
+        allow="autoplay"
+        title="INDIGA — SoundCloud player mobile"
+        src={`https://w.soundcloud.com/player/?url=${encodedUrl}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_teaser=false&visual=false&show_artwork=false&sharing=false&buying=false&download=false&color=ffffff`}
+      ></iframe>
+    </div>
   </div>
 </div>
 
@@ -101,12 +116,12 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
   // ── MOBILE ──────────────────────────────────────────────
   function initMobile() {
-    const button = document.getElementById('audio-toggle') as HTMLButtonElement | null;
-    const panel = document.getElementById('sc-mobile-panel') as HTMLElement | null;
+    const button   = document.getElementById('audio-toggle')    as HTMLButtonElement | null;
+    const panel    = document.getElementById('sc-mobile-panel') as HTMLElement | null;
     const closeBtn = document.getElementById('sc-mobile-close') as HTMLButtonElement | null;
-    const playIcon = document.getElementById('audio-play-icon');
+    const playIcon  = document.getElementById('audio-play-icon');
     const pauseIcon = document.getElementById('audio-pause-icon');
-    const ring = document.getElementById('audio-ring');
+    const ring      = document.getElementById('audio-ring');
 
     if (!button || !panel || !closeBtn) return;
 
@@ -130,10 +145,7 @@ const encodedUrl = encodeURIComponent(trackUrl);
       button.setAttribute('aria-label', 'Reproducir set de INDIGA');
     };
 
-    button.addEventListener('click', () => {
-      open ? closePanel() : openPanel();
-    });
-
+    button.addEventListener('click', () => open ? closePanel() : openPanel());
     closeBtn.addEventListener('click', closePanel);
   }
 
@@ -145,12 +157,12 @@ const encodedUrl = encodeURIComponent(trackUrl);
       return;
     }
 
-    const iframe = document.getElementById('sc-player-desktop') as HTMLIFrameElement | null;
-    const button = document.getElementById('audio-toggle') as HTMLButtonElement | null;
-    const playIcon = document.getElementById('audio-play-icon');
+    const iframe    = document.getElementById('sc-player-desktop') as HTMLIFrameElement | null;
+    const button    = document.getElementById('audio-toggle')      as HTMLButtonElement | null;
+    const playIcon  = document.getElementById('audio-play-icon');
     const pauseIcon = document.getElementById('audio-pause-icon');
-    const ring = document.getElementById('audio-ring');
-    const label = document.getElementById('audio-label');
+    const ring      = document.getElementById('audio-ring');
+    const label     = document.getElementById('audio-label');
 
     if (!iframe || !button) return;
 
@@ -187,10 +199,7 @@ const encodedUrl = encodeURIComponent(trackUrl);
     });
 
     button.addEventListener('click', () => {
-      if (playing) {
-        widget.pause();
-        return;
-      }
+      if (playing) { widget.pause(); return; }
       setPlayingUI();
       widget.play();
     });
@@ -239,5 +248,27 @@ const encodedUrl = encodeURIComponent(trackUrl);
   }
   .is-spinning {
     animation: audio-spin 6s linear infinite;
+  }
+
+  /*
+   * Recorta el iframe de SoundCloud para mostrar solo
+   * la barra de progreso y controles (oculta el header con logo).
+   * El iframe nativo tiene ~166px de alto; el header ocupa ~46px.
+   * Lo desplazamos hacia arriba para ocultar el header y
+   * mostramos solo la parte inferior con los controles.
+   */
+  .sc-iframe-crop {
+    height: 52px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sc-iframe-crop iframe {
+    width: 100%;
+    height: 166px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: none;
   }
 </style>
