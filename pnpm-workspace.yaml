@@ -1,6 +1,13 @@
 allowBuilds:
-  esbuild: true
-  sharp: true
+  esbuild: set this to true or false
+  sharp: set this to true or false
 onlyBuiltDependencies:
   - esbuild
   - sharp
+supportedArchitectures:
+  os:
+    - current
+    - linux
+  cpu:
+    - current
+    - x64

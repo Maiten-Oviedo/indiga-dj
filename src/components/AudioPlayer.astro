@@ -1,0 +1,179 @@
+---
+const trackUrl = 'https://soundcloud.com/celess-454571330';
+const encodedUrl = encodeURIComponent(trackUrl);
+---
+
+<div
+  id="audio-player"
+  class="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8"
+>
+  <iframe
+    id="sc-player"
+    class="pointer-events-none fixed opacity-0"
+    style="width: 1px; height: 1px; left: -9999px; top: -9999px;"
+    scrolling="no"
+    frameborder="no"
+    allow="autoplay"
+    title="INDIGA — SoundCloud player"
+    src={`https://w.soundcloud.com/player/?url=${encodedUrl}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_teaser=false&visual=false&show_artwork=false`}
+  ></iframe>
+
+  <button
+    id="audio-toggle"
+    type="button"
+    class="group relative flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-night)]/90 shadow-2xl backdrop-blur-md transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 md:h-20 md:w-20"
+    aria-label="Reproducir set de INDIGA"
+  >
+    <span
+      id="audio-ring"
+      class="pointer-events-none absolute inset-0 rounded-full border border-dashed border-white/30"
+    ></span>
+    <span
+      class="pointer-events-none absolute inset-3 rounded-full ring-1 ring-white/10"
+    ></span>
+
+    <svg
+      id="audio-play-icon"
+      class="h-5 w-5 text-white md:h-6 md:w-6"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M8 5v14l11-7z"></path>
+    </svg>
+    <svg
+      id="audio-pause-icon"
+      class="hidden h-5 w-5 text-white md:h-6 md:w-6"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M6 4h4v16H6zM14 4h4v16h-4z"></path>
+    </svg>
+  </button>
+
+  <span
+    id="audio-label"
+    class="pointer-events-none absolute right-full top-1/2 mr-4 hidden max-w-[16rem] -translate-y-1/2 truncate whitespace-nowrap font-serif text-sm text-white/70 opacity-0 transition-opacity duration-300 md:block"
+  >
+    Escuchar set
+  </span>
+</div>
+
+<script src="https://w.soundcloud.com/player/api.js" is:inline></script>
+
+<script>
+  function initAudioPlayer() {
+    const w = window as unknown as { SC?: any };
+    if (!w.SC || !w.SC.Widget) {
+      setTimeout(initAudioPlayer, 150);
+      return;
+    }
+
+    const iframe = document.getElementById(
+      'sc-player'
+    ) as HTMLIFrameElement | null;
+    const button = document.getElementById(
+      'audio-toggle'
+    ) as HTMLButtonElement | null;
+    const playIcon = document.getElementById('audio-play-icon');
+    const pauseIcon = document.getElementById('audio-pause-icon');
+    const ring = document.getElementById('audio-ring');
+    const label = document.getElementById('audio-label');
+
+    if (!iframe || !button) return;
+
+    const widget = w.SC.Widget(iframe);
+    let playing = false;
+    let hasPlayedSuccessfully = false;
+    let expectingPlay = false;
+
+    const setPlayingUI = () => {
+      button.setAttribute('aria-label', 'Pausar set');
+      playIcon?.classList.add('hidden');
+      pauseIcon?.classList.remove('hidden');
+      ring?.classList.add('is-spinning');
+      label?.classList.remove('opacity-0');
+      label?.classList.add('opacity-100');
+    };
+
+    const setPausedUI = () => {
+      button.setAttribute('aria-label', 'Reproducir set de INDIGA');
+      playIcon?.classList.remove('hidden');
+      pauseIcon?.classList.add('hidden');
+      ring?.classList.remove('is-spinning');
+      if (label) {
+        label.classList.remove('opacity-100');
+        label.classList.add('opacity-0');
+      }
+    };
+
+    widget.bind(w.SC.Widget.Events.READY, () => {
+      widget.getCurrentSound((sound: any) => {
+        if (sound?.title && label) label.textContent = sound.title;
+      });
+    });
+
+    button.addEventListener('click', () => {
+      if (playing) {
+        expectingPlay = false;
+        widget.pause();
+        return;
+      }
+      expectingPlay = true;
+      setPlayingUI();
+      widget.play();
+      if (!hasPlayedSuccessfully) {
+        setTimeout(() => {
+          if (!playing) widget.play();
+        }, 700);
+      }
+    });
+
+    widget.bind(w.SC.Widget.Events.PLAY, () => {
+      playing = true;
+      hasPlayedSuccessfully = true;
+      expectingPlay = false;
+      setPlayingUI();
+    });
+
+    widget.bind(w.SC.Widget.Events.PAUSE, () => {
+      playing = false;
+      if (expectingPlay) return;
+      setPausedUI();
+    });
+
+    widget.bind(w.SC.Widget.Events.FINISH, () => {
+      playing = false;
+      expectingPlay = false;
+      setPausedUI();
+    });
+
+    button.addEventListener('mouseenter', () => {
+      label?.classList.remove('opacity-0');
+      label?.classList.add('opacity-100');
+    });
+    button.addEventListener('mouseleave', () => {
+      if (!playing && label) {
+        label.classList.remove('opacity-100');
+        label.classList.add('opacity-0');
+      }
+    });
+  }
+
+  initAudioPlayer();
+</script>
+
+<style>
+  @keyframes audio-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .is-spinning {
+    animation: audio-spin 6s linear infinite;
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+const setupImage = '/img/setup.jpg';
+
+const equipment = [
+  {
+    label: 'CDJ',
+    primary: '3 × Pioneer CDJ-3000',
+    alt: 'o 3 × CDJ-2000NXS2 / XDJ-1000MK2',
+  },
+  {
+    label: 'Mixer',
+    primary: 'Pioneer',
+    alt: 'o Allen & Heath Xone:96 / :92',
+  },
+  {
+    label: 'Monitores',
+    primary: 'De cabina',
+    alt: null,
+  },
+];
+---
+
+<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <svg
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.12] mix-blend-overlay"
+  >
+    <filter id="grain-setup">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.85"
+        numOctaves="2"
+        stitchTiles="stitch"
+      />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-setup)"></rect>
+  </svg>
+
+  <div class="relative">
+    <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/50">
+      06 — Setup
+    </p>
+    <h2 class="mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
+      Requisitos<br />técnicos.
+    </h2>
+    <p class="mt-8 max-w-lg text-base md:text-lg leading-relaxed text-white/70">
+      Ficha técnica para bookings. Click en la imagen para descargar y adjuntar
+      al rider.
+    </p>
+  </div>
+
+  <div
+    class="relative mt-16 grid grid-cols-1 gap-16 md:mt-24 md:grid-cols-5 md:gap-12"
+  >
+    <ul
+      class="relative md:col-span-2 space-y-8 border-t border-white/10 pt-8"
+    >
+      {
+        equipment.map((item) => (
+          <li>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+              {item.label}
+            </p>
+            <p class="mt-2 font-serif text-xl md:text-2xl leading-tight">
+              {item.primary}
+            </p>
+            {item.alt && (
+              <p class="mt-1 text-sm text-white/50">{item.alt}</p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="relative md:col-span-3">
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute -right-4 -top-16 select-none font-serif text-[12rem] font-bold leading-[0.8] text-white/[0.05] md:-right-16 md:-top-24 md:text-[24rem]"
+      >
+        06
+      </span>
+
+      <a
+        href={setupImage}
+        download="indiga-setup.jpg"
+        class="group relative block overflow-hidden shadow-2xl ring-1 ring-white/10"
+        aria-label="Descargar ficha técnica de setup"
+      >
+        <img
+          src={setupImage}
+          alt="Setup técnico de INDIGA: consola Pioneer DJ CDJ-3000 y mixer DJM"
+          class="h-auto w-full"
+          loading="lazy"
+        />
+        <div
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-500 group-hover:bg-black/60"
+        >
+          <span
+            class="flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          >
+            <span class="font-serif text-3xl md:text-5xl text-white">
+              Descargar
+            </span>
+            <svg
+              class="h-8 w-8 md:h-12 md:w-12 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              ></path>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <div class="mt-6 flex items-center gap-4 text-xs text-white/50">
+        <span class="uppercase tracking-[0.3em]">JPG · Alta resolución</span>
+      </div>
+    </div>
+  </div>
+</section>

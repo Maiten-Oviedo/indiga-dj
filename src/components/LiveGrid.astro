@@ -1,59 +1,159 @@
 ---
 import { Image } from 'astro:assets';
 import live01 from '../assets/img/live-01.jpg';
-import live02 from '../assets/img/live-02.jpg';
 import live03 from '../assets/img/live-03.jpg';
 import live04 from '../assets/img/live-04.jpg';
 import live05 from '../assets/img/live-05.jpg';
 import live06 from '../assets/img/live-06.jpg';
 import live07 from '../assets/img/live-07.jpg';
-import live08 from '../assets/img/live-08.jpg';
 
-const shots = [live01, live02, live03, live04, live05, live06, live07, live08];
+const gallery = [live01, live03, live04, live05, live06, live07];
 ---
 
-<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
-  <div class="relative mb-16 md:mb-24">
-    <img
-      src="/img/stars-02.png"
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 -z-10">
+    <Image
+      src={live06}
       alt=""
-      aria-hidden="true"
+      class="h-full w-full object-cover blur-[2px]"
+      widths={[1200, 1920, 2400]}
+      sizes="100vw"
       loading="lazy"
-      class="pointer-events-none absolute -left-4 -top-8 -z-0 w-56 brightness-0 invert opacity-[0.08] md:-left-12 md:-top-16 md:w-80"
     />
-    <p
-      class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(180deg, rgba(8,8,15,0.75) 0%, rgba(8,8,15,0.55) 40%, rgba(8,8,15,0.85) 100%);"
     >
-      03 — En cabina
-    </p>
-    <h2
-      class="relative mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
-    >
-      La pista<br />como lenguaje.
-    </h2>
+    </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-    {
-      shots.map((shot, i) => (
-        <div
-          class:list={[
-            'group relative overflow-hidden',
-            i === 0 || i === 5
-              ? 'col-span-2 row-span-2 aspect-square'
-              : 'aspect-[4/5]',
-          ]}
-        >
-          <Image
-            src={shot}
-            alt=""
-            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            widths={[400, 800, 1200]}
-            sizes="(min-width: 768px) 25vw, 50vw"
-            loading="lazy"
-          />
-        </div>
-      ))
-    }
+  <svg
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.15] mix-blend-overlay"
+  >
+    <filter id="grain-livegrid">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.85"
+        numOctaves="2"
+        stitchTiles="stitch"
+      />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-livegrid)"></rect>
+  </svg>
+
+  <div class="relative px-6 py-24 md:px-12 md:py-32 lg:py-40">
+    <div class="relative mb-12 md:mb-16">
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/70">
+        03 — En cabina
+      </p>
+      <h2
+        class="mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
+      >
+        La pista<br />como lenguaje.
+      </h2>
+    </div>
+
+    <div class="relative">
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute -right-4 top-1/2 -translate-y-1/2 select-none font-serif text-[14rem] font-bold leading-[0.8] text-white/[0.09] md:-right-16 md:text-[30rem]"
+      >
+        03
+      </span>
+
+      <div class="relative grid grid-cols-12 gap-3 md:gap-5">
+        <figure class="col-span-6 md:col-span-4">
+          <div
+            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:-rotate-[1.5deg]"
+          >
+            <Image
+              src={gallery[0]}
+              alt="INDIGA en cabina"
+              class="h-full w-full object-cover"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 30vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
+        <figure class="col-span-6 md:col-span-4 md:mt-16">
+          <div
+            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10"
+          >
+            <Image
+              src={gallery[1]}
+              alt=""
+              class="h-full w-full object-cover"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 30vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
+        <figure class="col-span-6 md:col-span-4 md:-mt-8">
+          <div
+            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:rotate-[1.5deg]"
+          >
+            <Image
+              src={gallery[2]}
+              alt=""
+              class="h-full w-full object-cover"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 30vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
+        <figure class="col-span-6 md:col-span-5 md:col-start-1 md:mt-4">
+          <div
+            class="relative aspect-[3/2] overflow-hidden shadow-2xl ring-1 ring-white/10"
+          >
+            <Image
+              src={gallery[3]}
+              alt=""
+              class="h-full w-full object-cover"
+              widths={[400, 800, 1200]}
+              sizes="(min-width: 768px) 42vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
+        <figure class="col-span-6 md:col-span-3 md:mt-16">
+          <div
+            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:-rotate-[1deg]"
+          >
+            <Image
+              src={gallery[4]}
+              alt="Cabina — vista general"
+              class="h-full w-full object-cover"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 25vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
+        <figure class="col-span-6 md:col-span-4 md:mt-8">
+          <div
+            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:rotate-[1deg]"
+          >
+            <Image
+              src={gallery[5]}
+              alt=""
+              class="h-full w-full object-cover"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 30vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+      </div>
+    </div>
   </div>
 </section>
