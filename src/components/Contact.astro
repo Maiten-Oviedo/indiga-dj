@@ -2,6 +2,7 @@
 const email = 'psymania.ar@gmail.com';
 const instagram = 'https://www.instagram.com/indiga_____/';
 const soundcloud = 'https://on.soundcloud.com/OwR1GW94sVT65zVWKd';
+const showPdfDownload = false;
 ---
 
 <section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
@@ -16,7 +17,7 @@ const soundcloud = 'https://on.soundcloud.com/OwR1GW94sVT65zVWKd';
   <p
     class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
   >
-    06 — Contacto
+    07 — Contacto
   </p>
   <h2
     class="relative mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
@@ -77,4 +78,40 @@ const soundcloud = 'https://on.soundcloud.com/OwR1GW94sVT65zVWKd';
       </ul>
     </div>
   </div>
+
+  {
+    showPdfDownload && (
+      <a
+        href="/presskit/indiga-presskit.pdf"
+        download="indiga-presskit.pdf"
+        class="group relative mt-20 flex items-center justify-between gap-6 border-y border-white/20 py-8 transition-colors hover:border-white/60 md:mt-24 md:py-10"
+        aria-label="Descargar presskit completo en PDF"
+      >
+        <span class="flex flex-col gap-1">
+          <span class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+            Presskit completo
+          </span>
+          <span class="font-serif text-2xl md:text-3xl lg:text-4xl leading-tight">
+            Descargar PDF
+          </span>
+        </span>
+        <span class="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 transition-all group-hover:h-16 group-hover:w-16 group-hover:border-white group-hover:bg-white md:h-16 md:w-16 md:group-hover:h-20 md:group-hover:w-20">
+          <svg
+            class="h-6 w-6 text-white transition-colors group-hover:text-[var(--color-bg)] md:h-7 md:w-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            />
+          </svg>
+        </span>
+      </a>
+    )
+  }
 </section>

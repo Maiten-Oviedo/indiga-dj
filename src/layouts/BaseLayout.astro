@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+import AudioPlayer from '../components/AudioPlayer.astro';
+import Animations from '../components/Animations.astro';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
   title: string;
@@ -64,5 +68,9 @@ const personSchema = {
   </head>
   <body>
     <slot />
+    <AudioPlayer />
+    <Animations />
+    <Analytics />
+    <SpeedInsights />
   </body>
 </html>
