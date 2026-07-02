@@ -1,54 +1,94 @@
 ---
+import { Image } from 'astro:assets'
+import crowd from '../assets/img/live-06.jpg'
+
 const videos = [
   { id: 'vA7mb2R0nRg', label: 'SSL' },
   { id: 'iASquIZDFc4', label: 'HERMETIK' },
-];
+]
 ---
 
 <section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <!-- Crowd background anclado abajo (se ve la gente, no el techo) -->
+  <div class="absolute inset-0 -z-10">
+    <Image
+      src={crowd}
+      alt=""
+      class="h-full w-full object-cover object-center opacity-55"
+      widths={[1200, 1920]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(180deg, rgba(8,8,15,0.55) 0%, rgba(8,8,15,0.35) 50%, rgba(8,8,15,0.55) 100%);"
+    >
+    </div>
+  </div>
+
+  <svg
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.12] mix-blend-overlay"
+  >
+    <filter id="grain-sets">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.85"
+        numOctaves="2"
+        stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-sets)"></rect>
+  </svg>
+
   <img
     src="/img/mic-01.png"
     alt=""
     aria-hidden="true"
     loading="lazy"
-    class="pointer-events-none absolute -right-12 top-16 -z-0 w-64 brightness-0 invert opacity-[0.06] md:-right-20 md:top-24 md:w-[28rem]"
+    class="pointer-events-none absolute -right-12 top-16 z-0 w-64 brightness-0 invert opacity-[0.06] md:-right-20 md:top-24 md:w-[28rem]"
   />
 
-  <p
-    class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
-  >
-    05 — Sets
-  </p>
-  <h2
-    class="relative mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
-  >
-    En vivo,<br />en cabina.
-  </h2>
-
+  <!-- Layout: mobile apilado / desktop 2 cols (h2 izq, videos der) -->
   <div
-    class="relative mt-16 grid grid-cols-1 gap-10 md:mt-24 md:grid-cols-2 md:gap-6"
+    class="relative grid grid-cols-1 gap-12 md:grid-cols-[1fr_minmax(0,500px)] md:gap-16 md:items-center"
   >
-    {
-      videos.map((v, i) => (
-        <figure>
-          <div class="aspect-video overflow-hidden bg-black ring-1 ring-white/10">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${v.id}`}
-              title={`Video set x ${v.label}`}
-              class="h-full w-full"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-            />
-          </div>
-          <figcaption class="mt-4 flex items-baseline gap-4">
-            <span class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
-              Set 0{i + 1}
-            </span>
-            <span class="font-serif text-xl md:text-2xl">x {v.label}</span>
-          </figcaption>
-        </figure>
-      ))
-    }
+    <!-- Izquierda: label + h2 -->
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/50">
+        05 — Sets
+      </p>
+      <h2
+        class="mt-4 font-serif text-4xl leading-tight md:text-5xl lg:text-7xl"
+      >
+        En vivo,<br />en cabina.
+      </h2>
+    </div>
+
+    <!-- Derecha: videos apilados -->
+    <div class="flex flex-col gap-6">
+      {
+        videos.map((v, i) => (
+          <figure>
+            <div class="aspect-video overflow-hidden bg-black ring-1 ring-white/10">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+                title={`Video set x ${v.label}`}
+                class="h-full w-full"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              />
+            </div>
+            <figcaption class="mt-3 flex items-baseline gap-4">
+              <span class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+                Set 0{i + 1}
+              </span>
+              <span class="font-serif text-lg md:text-xl">x {v.label}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
   </div>
 </section>

@@ -35,7 +35,58 @@
       });
     }
 
-    const sections = Array.from(document.querySelectorAll('section')).slice(1);
+    const heroSection = document.querySelector('section');
+    const heroBg = document.getElementById('hero-bg');
+
+    if (heroSection && heroBg) {
+      gsap.to(heroBg, {
+        y: '10%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.2,
+        },
+      });
+    }
+
+    // LiveGrid: parallax fondo + entrada escalonada por figura
+    const livegridSection = document.getElementById('livegrid-section');
+    const livegridBg = document.getElementById('livegrid-bg');
+
+    if (livegridSection && livegridBg) {
+      gsap.to(livegridBg, {
+        y: '8%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: livegridSection,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2.5,
+        },
+      });
+    }
+
+    if (livegridSection) {
+      const els = livegridSection.querySelectorAll('[data-lg], figure');
+      gsap.from(els, {
+        opacity: 0,
+        y: 50,
+        duration: 0.9,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: livegridSection,
+          start: 'top 70%',
+          once: true,
+        },
+      });
+    }
+
+    const sections = Array.from(document.querySelectorAll('section'))
+      .slice(1)
+      .filter((s) => s.id !== 'livegrid-section');
     sections.forEach((section) => {
       gsap.set(section, { opacity: 0, y: 40 });
       gsap.to(section, {

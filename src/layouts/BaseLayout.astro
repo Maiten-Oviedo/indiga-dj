@@ -1,14 +1,14 @@
 ---
-import '../styles/global.css';
-import AudioPlayer from '../components/AudioPlayer.astro';
-import Animations from '../components/Animations.astro';
-import Analytics from '@vercel/analytics/astro';
+import '../styles/global.css'
+import AudioPlayer from '../components/AudioPlayer.astro'
+import Animations from '../components/Animations.astro'
+import Analytics from '@vercel/analytics/astro'
 
 interface Props {
-  title: string;
-  description: string;
-  image?: string;
-  type?: 'website' | 'profile' | 'article';
+  title: string
+  description: string
+  image?: string
+  type?: 'website' | 'profile' | 'article'
 }
 
 const {
@@ -16,10 +16,10 @@ const {
   description,
   image = '/og/indiga.jpg',
   type = 'website',
-} = Astro.props;
+} = Astro.props
 
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = new URL(image, Astro.site).toString();
+const canonical = new URL(Astro.url.pathname, Astro.site).toString()
+const ogImage = new URL(image, Astro.site).toString()
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -33,7 +33,7 @@ const personSchema = {
     'https://www.instagram.com/indiga_____/',
     'https://on.soundcloud.com/OwR1GW94sVT65zVWKd',
   ],
-};
+}
 ---
 
 <!doctype html>
@@ -63,7 +63,15 @@ const personSchema = {
 
     <slot name="head" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <meta
+      name="google-site-verification"
+      content="BUCXCTCgr5F3roat19K667O0cxIUjBQ0K3VzC6mqqnE"
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
   </head>
   <body>
     <slot />

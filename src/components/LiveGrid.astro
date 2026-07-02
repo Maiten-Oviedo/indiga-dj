@@ -1,28 +1,29 @@
 ---
-import { Image } from 'astro:assets';
-import live01 from '../assets/img/live-01.jpg';
-import live03 from '../assets/img/live-03.jpg';
-import live04 from '../assets/img/live-04.jpg';
-import live05 from '../assets/img/live-05.jpg';
-import live06 from '../assets/img/live-06.jpg';
-import live07 from '../assets/img/live-07.jpg';
+import { Image } from 'astro:assets'
+import live01 from '../assets/img/live-01.jpg'
+import live03 from '../assets/img/live-03.jpg'
+import live04 from '../assets/img/live-04.jpg'
+import live05 from '../assets/img/live-05.jpg'
+import live06 from '../assets/img/live-06.jpg'
+import live07 from '../assets/img/live-07.jpg'
 
-const gallery = [live01, live03, live04, live05, live06, live07];
+const gallery = [live01, live03, live04, live05, live06, live07]
 ---
 
-<section class="relative overflow-hidden">
+<section id="livegrid-section" class="relative overflow-hidden">
   <div class="absolute inset-0 -z-10">
     <Image
+      id="livegrid-bg"
       src={live06}
       alt=""
-      class="h-full w-full object-cover blur-[2px]"
+      class="absolute -top-[15%] h-[130%] w-full object-cover blur-[2px]"
       widths={[1200, 1920, 2400]}
       sizes="100vw"
       loading="lazy"
     />
     <div
       class="absolute inset-0"
-      style="background: linear-gradient(180deg, rgba(8,8,15,0.75) 0%, rgba(8,8,15,0.55) 40%, rgba(8,8,15,0.85) 100%);"
+      style="background: linear-gradient(180deg, rgba(8,8,15,0.88) 0%, rgba(8,8,15,0.72) 40%, rgba(8,8,15,0.92) 100%);"
     >
     </div>
   </div>
@@ -36,34 +37,36 @@ const gallery = [live01, live03, live04, live05, live06, live07];
         type="fractalNoise"
         baseFrequency="0.85"
         numOctaves="2"
-        stitchTiles="stitch"
-      />
-      <feColorMatrix type="saturate" values="0" />
+        stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
     </filter>
     <rect width="100%" height="100%" filter="url(#grain-livegrid)"></rect>
   </svg>
 
   <div class="relative px-6 py-24 md:px-12 md:py-32 lg:py-40">
-    <div class="relative mb-12 md:mb-16">
-      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/70">
-        03 — En cabina
-      </p>
-      <h2
-        class="mt-4 font-serif text-4xl md:text-5xl lg:text-6xl leading-tight"
-      >
-        La pista<br />como lenguaje.
-      </h2>
-    </div>
+    <p
+      data-lg
+      class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-white/70"
+    >
+      03 — En cabina
+    </p>
+    <h2
+      data-lg
+      class="mb-16 font-serif text-4xl leading-tight md:mb-24 md:text-5xl lg:text-6xl"
+    >
+      La pista<br />como lenguaje.
+    </h2>
 
     <div class="relative">
       <span
         aria-hidden="true"
-        class="pointer-events-none absolute -right-4 top-1/2 -translate-y-1/2 select-none font-serif text-[14rem] font-bold leading-[0.8] text-white/[0.09] md:-right-16 md:text-[30rem]"
+        class="pointer-events-none absolute -bottom-8 -right-4 select-none font-serif font-bold leading-[0.8] text-white/[0.05] md:-bottom-12 md:-right-8"
+        style="font-size: clamp(10rem, 38vw, 42rem);"
       >
         03
       </span>
 
-      <div class="relative grid grid-cols-12 gap-3 md:gap-5">
+      <div class="photo-grid relative z-10 grid grid-cols-12 gap-3 md:gap-5">
         <figure class="col-span-6 md:col-span-4">
           <div
             class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:-rotate-[1.5deg]"
@@ -153,7 +156,22 @@ const gallery = [live01, live03, live04, live05, live06, live07];
             />
           </div>
         </figure>
+
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .photo-grid figure {
+    cursor: pointer;
+  }
+  /* reset explícito: nada cambia en las demás fotos */
+  .photo-grid figure > div img {
+    filter: brightness(1);
+    transition: transform 0.7s ease;
+  }
+  .photo-grid figure:hover > div img {
+    transform: scale(1.04);
+  }
+</style>
