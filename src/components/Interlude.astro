@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets'
+import windowBg from '../assets/img/bw-window.jpg'
+import windowBgPortrait from '../assets/img/bw-window-portrait.jpg'
+import portraitEyes from '../assets/img/portrait-eyes.jpg'
+---
+
+<section
+  id="interlude-section"
+  class="relative py-20 md:py-28"
+  style={`--bg-mobile: url('${windowBgPortrait.src}'); --bg-desktop: url('${windowBg.src}');`}
+>
+  <div class="absolute inset-0 bg-[#08080f]/50"></div>
+
+  <svg
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.15] mix-blend-overlay"
+  >
+    <filter id="grain-interlude">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.85"
+        numOctaves="2"
+        stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-interlude)"></rect>
+  </svg>
+
+  <!-- portrait-eyes centrada -->
+  <div class="relative mx-auto max-w-4xl overflow-hidden px-6 md:px-12">
+    <div
+      class="relative aspect-[21/9] overflow-hidden shadow-2xl ring-1 ring-white/10"
+    >
+      <Image
+        src={portraitEyes}
+        alt=""
+        class="h-full w-full object-cover object-center"
+        widths={[800, 1200, 1600]}
+        sizes="(min-width: 768px) 70vw, 90vw"
+        loading="lazy"
+      />
+      <div class="bg-black/50 top-0 right-0 w-full h-full absolute"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #interlude-section {
+    background-image: var(--bg-mobile);
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+  }
+  @media (min-width: 768px) {
+    #interlude-section {
+      background-image: var(--bg-desktop);
+      background-attachment: fixed;
+    }
+  }
+</style>

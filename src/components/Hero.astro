@@ -1,43 +1,89 @@
 ---
 import { Image } from 'astro:assets';
 import hero from '../assets/img/hero.jpg';
+import heroCutout from '../assets/img/hero-no-back.png';
 ---
 
 <section class="relative min-h-dvh overflow-hidden">
+  <!-- Fondo: en mobile normal, en desktop muy oscurecido -->
   <Image
+    id="hero-bg"
     src={hero}
     alt=""
-    class="absolute inset-0 -z-10 h-full w-full object-cover md:object-[center_25%]"
+    class="absolute inset-0 h-full w-full object-cover object-[center_25%] md:opacity-25"
     loading="eager"
     widths={[640, 1024, 1600, 2400]}
     sizes="100vw"
   />
-  <div
-    class="absolute inset-0 -z-10"
-    style="background: linear-gradient(180deg, rgba(8,8,15,0.45) 0%, rgba(8,8,15,0.15) 35%, rgba(8,8,15,0.85) 100%);"
-  >
-  </div>
 
-  <header
-    class="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-12"
-  >
+  <!-- Overlay mobile (original) -->
+  <div
+    class="absolute inset-0 md:hidden"
+    style="background: linear-gradient(180deg, rgba(8,8,15,0.45) 0%, rgba(8,8,15,0.15) 35%, rgba(8,8,15,0.85) 100%);"
+  ></div>
+
+  <!-- Overlay desktop (más oscuro para que resalte el texto) -->
+  <div
+    class="absolute inset-0 hidden md:block"
+    style="background: linear-gradient(180deg, #08080f 0%, rgba(8,8,15,0.2) 45%, rgba(8,8,15,0.85) 100%);"
+  ></div>
+
+  <!-- Header: tagline izq + (mobile: h1 / desktop: presskit) der -->
+  <header class="absolute inset-x-0 top-0 z-30 flex items-start justify-between p-6 md:p-12">
     <p
       data-anim="hero"
-      class="text-xs md:text-sm font-bold uppercase leading-tight tracking-tight"
+      class="text-xs font-bold uppercase leading-tight tracking-tight md:text-sm"
     >
       Feel what I<br />hear.
     </p>
+
+    <!-- Mobile: h1 top-right -->
     <h1
       data-anim="hero"
-      class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight"
+      class="font-serif text-5xl font-bold leading-none tracking-tight md:hidden"
     >
       INDIGA
     </h1>
+
+    <!-- Desktop: Presskit top-right -->
+    <p
+      data-anim="hero"
+      class="hidden text-right text-[10px] font-bold uppercase tracking-[0.2em] md:block md:text-xs"
+    >
+      Presskit<br />2026
+    </p>
   </header>
 
+  <!-- Desktop only: INDIGA centrado detrás del recorte (z-10) -->
+  <div
+    class="pointer-events-none absolute inset-0 z-10 hidden select-none md:flex md:items-start md:justify-center md:pt-[18vh]"
+    aria-hidden="true"
+  >
+    <span
+      data-anim="hero"
+      class="font-serif font-bold leading-none tracking-tight text-white whitespace-nowrap"
+      style="font-size: clamp(4rem, 20vw, 20rem);"
+    >
+      INDIGA
+    </span>
+  </div>
+
+  <!-- Desktop only: recorte de Cele encima del texto (z-20) -->
+  <div id="hero-cutout" class="absolute inset-x-0 bottom-[-10%] z-20 hidden md:flex md:justify-center">
+    <Image
+      src={heroCutout}
+      alt="INDIGA DJ"
+      class="h-auto max-h-[95vh] w-auto"
+      loading="eager"
+      widths={[640, 900, 1200]}
+      sizes="60vw"
+    />
+  </div>
+
+  <!-- Mobile only: Presskit bottom-left -->
   <footer
     data-anim="hero"
-    class="absolute bottom-0 left-0 p-6 md:p-12 text-left text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]"
+    class="absolute bottom-0 left-0 z-30 p-6 text-left text-[10px] font-bold uppercase tracking-[0.2em] md:hidden"
   >
     Presskit<br />2026
   </footer>

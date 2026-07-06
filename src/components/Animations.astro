@@ -24,6 +24,19 @@
       });
     }
 
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      const cutout = document.getElementById('hero-cutout');
+      if (cutout) {
+        gsap.from(cutout, {
+          y: '8%',
+          opacity: 0,
+          duration: 1.6,
+          delay: 0.5,
+          ease: 'power3.out',
+        });
+      }
+    }
+
     const audioPlayer = document.getElementById('audio-player');
     if (audioPlayer) {
       gsap.from(audioPlayer, {
@@ -86,7 +99,7 @@
 
     const sections = Array.from(document.querySelectorAll('section'))
       .slice(1)
-      .filter((s) => s.id !== 'livegrid-section');
+      .filter((s) => s.id !== 'livegrid-section' && s.id !== 'interlude-section');
     sections.forEach((section) => {
       gsap.set(section, { opacity: 0, y: 40 });
       gsap.to(section, {

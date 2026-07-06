@@ -108,7 +108,7 @@ const encodedUrl = encodeURIComponent(trackUrl);
 
     // Primer play/pause silencioso al cargar: "calienta" el contexto
     // de audio de iOS para que el primer tap del usuario funcione.
-    let primed = false;
+    let primed = window.innerWidth >= 768;
 
     widget.bind(w.SC.Widget.Events.READY, () => {
       widget.getCurrentSound((sound: any) => {
