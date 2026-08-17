@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# INDIGA — Presskit oficial 2026
 
-```sh
-pnpm create astro@latest -- --template minimal
+Presskit / landing site oficial para [INDIGA](https://indiga.vercel.app), DJ argentina que produce psytrance, trance, hard dance y techno.
+
+**🌐 En producción:** [indiga.vercel.app](https://indiga.vercel.app)
+
+<img width="1895" height="963" alt="image" src="https://github.com/user-attachments/assets/7208f7b1-f0f0-4130-b0af-1668ea3ddadc" />
+
+## Highlights
+
+- ✅ **Hero de alto impacto** — tipografía grande, imagen full-bleed, tagline "Feel what I hear".
+- ✅ **Layout responsive** — desktop, tablet y mobile, con jerarquía visual que se mantiene.
+- ✅ **Integraciones multimedia** — YouTube embebido para sets, SoundCloud player, Instagram.
+- ✅ **PDF descargable** con setup técnico (rider) para bookers y venues.
+- ✅ **SEO on-page** — Open Graph, Twitter Cards, meta tags optimizados.
+- ✅ **Imágenes optimizadas** en formato WebP para performance.
+
+## Secciones del sitio
+
+- Hero
+- Manifiesto artístico
+- Biografía
+- Galería "En cabina" (fotos en vivo)
+- Camino recorrido (venues, colaboraciones)
+- Sets embebidos
+- Setup técnico descargable
+- Contacto / Bookings
+
+## Stack
+
+- **Framework:** Astro
+- **Lenguaje:** TypeScript
+- **Estilos:** TailwindCSS
+- **Deploy:** Vercel
+- **Optimización:** WebP images, static generation, minimal JS
+
+## Correr localmente
+
+```bash
+git clone https://github.com/Maiten-Oviedo/indiga-presskit.git
+cd indiga-presskit
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Sobre el desarrollo
 
-## 🚀 Project Structure
+Desarrollé este sitio a pedido de INDIGA en julio 2026. Diseño y desarrollo end-to-end (el crédito aparece visible en el sitio: "Diseño crédito: Maitén Oviedo"). Prioridad: comunicar identidad artística con impacto visual y facilitar bookings.
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Contacto: [maitenoviedo513@gmail.com](mailto:maitenoviedo513@gmail.com) · [LinkedIn](https://linkedin.com/in/maiten-oviedo)
