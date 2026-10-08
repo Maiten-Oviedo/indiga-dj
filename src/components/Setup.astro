@@ -1,10 +1,30 @@
 ---
+import { Image } from 'astro:assets';
+import booth from '../assets/img/live-10.jpg';
 import { equipment } from '../data/presskit';
 
 const setupImage = '/img/setup.jpg';
 ---
 
-<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+<section id="setup-section" class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <!-- Fondo: Cele en cabina vista desde arriba (parallax en Animations.astro) -->
+  <div class="absolute inset-0 -z-10">
+    <Image
+      id="setup-bg"
+      src={booth}
+      alt=""
+      class="absolute -top-[8%] h-[116%] w-full object-cover opacity-45"
+      widths={[1200, 1920]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(180deg, rgba(8,8,15,0.92) 0%, rgba(8,8,15,0.6) 45%, rgba(8,8,15,0.92) 100%);"
+    >
+    </div>
+  </div>
+
   <svg
     aria-hidden="true"
     class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.12] mix-blend-overlay"
@@ -38,6 +58,7 @@ const setupImage = '/img/setup.jpg';
     class="relative mt-16 grid grid-cols-1 gap-16 md:mt-24 md:grid-cols-5 md:gap-12"
   >
     <ul
+      data-cascade
       class="relative md:col-span-2 space-y-8 border-t border-white/10 pt-8"
     >
       {
@@ -68,6 +89,7 @@ const setupImage = '/img/setup.jpg';
       <a
         href={setupImage}
         download="indiga-setup.jpg"
+        data-wipe
         class="group relative block overflow-hidden shadow-2xl ring-1 ring-white/10"
         aria-label="Descargar ficha técnica de setup"
       >
