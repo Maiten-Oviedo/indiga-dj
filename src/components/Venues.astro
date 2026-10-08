@@ -18,9 +18,9 @@ import { venues, artists, camino } from '../data/presskit';
       <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
         Cabinas
       </p>
-      <ul class="mt-6 space-y-3">
+      <ul data-venues class="mt-6 space-y-3">
         {venues.map((v) => (
-          <li class="font-serif text-2xl md:text-3xl">{v}</li>
+          <li class="venue-item overflow-hidden pb-[0.08em] font-serif text-2xl md:text-3xl"><span class="inline-block transition-[color,translate] duration-500 hover:translate-x-3 hover:text-[#a5b4fc]">{v}</span></li>
         ))}
       </ul>
     </div>
@@ -28,9 +28,9 @@ import { venues, artists, camino } from '../data/presskit';
       <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/40">
         Compartió cabina
       </p>
-      <ul class="mt-6 space-y-3">
+      <ul data-venues class="mt-6 space-y-3">
         {artists.map((a) => (
-          <li class="font-serif text-2xl md:text-3xl">{a}</li>
+          <li class="venue-item overflow-hidden pb-[0.08em] font-serif text-2xl md:text-3xl"><span class="inline-block transition-[color,translate] duration-500 hover:translate-x-3 hover:text-[#a5b4fc]">{a}</span></li>
         ))}
       </ul>
     </div>

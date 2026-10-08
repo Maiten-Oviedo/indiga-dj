@@ -103,6 +103,17 @@
       });
     });
 
+    // Venues: cada nombre sube desde su máscara, en cascada
+    document.querySelectorAll('[data-venues]').forEach((list) => {
+      gsap.from(list.querySelectorAll('.venue-item > span'), {
+        yPercent: 105,
+        duration: 0.9,
+        stagger: 0.07,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: list, start: 'top 85%', once: true },
+      });
+    });
+
     // Texto que se "enciende" palabra por palabra con el scroll
     document.querySelectorAll('[data-reveal]').forEach((block) => {
       gsap.fromTo(
