@@ -4,6 +4,8 @@
 <script>
   import gsap from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import Lenis from 'lenis';
+  import 'lenis/dist/lenis.css';
 
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -11,6 +13,12 @@
 
   if (!prefersReducedMotion) {
     gsap.registerPlugin(ScrollTrigger);
+
+    // Scroll inercial: Lenis maneja el scroll y GSAP le marca el ritmo
+    const lenis = new Lenis();
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
 
     const heroElements = document.querySelectorAll('[data-anim="hero"]');
     if (heroElements.length) {
