@@ -43,7 +43,7 @@ const gallery = [live01, live03, live04, live05, live06, live07]
     <rect width="100%" height="100%" filter="url(#grain-livegrid)"></rect>
   </svg>
 
-  <div class="relative px-6 py-24 md:px-12 md:py-32 lg:py-40">
+  <div class="relative px-6 py-24 md:flex md:h-svh md:flex-col md:justify-center md:px-12 md:py-12">
     <p
       data-lg
       class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-white/70"
@@ -52,7 +52,7 @@ const gallery = [live01, live03, live04, live05, live06, live07]
     </p>
     <h2
       data-lg
-      class="mb-16 font-serif text-4xl leading-tight md:mb-24 md:text-5xl lg:text-6xl"
+      class="mb-16 font-serif text-4xl leading-tight md:mb-10 md:text-5xl lg:text-6xl"
     >
       La pista<br />como lenguaje.
     </h2>
@@ -66,10 +66,11 @@ const gallery = [live01, live03, live04, live05, live06, live07]
         03
       </span>
 
-      <div class="photo-grid relative z-10 grid grid-cols-12 gap-3 md:gap-5">
-        <figure class="col-span-6 md:col-span-4">
+      <!-- mobile: grilla / desktop: track horizontal que Animations.astro desplaza con el scroll -->
+      <div class="photo-grid relative z-10 grid grid-cols-12 gap-3 md:flex md:w-max md:items-start md:gap-10">
+        <figure class="md:shrink-0 col-span-6 md:col-span-4">
           <div
-            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:-rotate-[1.5deg]"
+            class="relative aspect-[4/5] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10 md:-rotate-[1.5deg]"
           >
             <Image
               src={gallery[0]}
@@ -82,9 +83,9 @@ const gallery = [live01, live03, live04, live05, live06, live07]
           </div>
         </figure>
 
-        <figure class="col-span-6 md:col-span-4 md:mt-16">
+        <figure class="md:shrink-0 col-span-6 md:col-span-4 md:mt-16">
           <div
-            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10"
+            class="relative aspect-[4/5] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10"
           >
             <Image
               src={gallery[1]}
@@ -97,9 +98,9 @@ const gallery = [live01, live03, live04, live05, live06, live07]
           </div>
         </figure>
 
-        <figure class="col-span-6 md:col-span-4 md:-mt-8">
+        <figure class="md:shrink-0 col-span-6 md:col-span-4 md:-mt-8">
           <div
-            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:rotate-[1.5deg]"
+            class="relative aspect-[4/5] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10 md:rotate-[1.5deg]"
           >
             <Image
               src={gallery[2]}
@@ -112,9 +113,9 @@ const gallery = [live01, live03, live04, live05, live06, live07]
           </div>
         </figure>
 
-        <figure class="col-span-6 md:col-span-5 md:col-start-1 md:mt-4">
+        <figure class="md:shrink-0 col-span-6 md:col-span-5 md:col-start-1 md:mt-4">
           <div
-            class="relative aspect-[3/2] overflow-hidden shadow-2xl ring-1 ring-white/10"
+            class="relative aspect-[3/2] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10"
           >
             <Image
               src={gallery[3]}
@@ -127,9 +128,9 @@ const gallery = [live01, live03, live04, live05, live06, live07]
           </div>
         </figure>
 
-        <figure class="col-span-6 md:col-span-3 md:mt-16">
+        <figure class="md:shrink-0 col-span-6 md:col-span-3 md:mt-16">
           <div
-            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:-rotate-[1deg]"
+            class="relative aspect-[4/5] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10 md:-rotate-[1deg]"
           >
             <Image
               src={gallery[4]}
@@ -142,9 +143,9 @@ const gallery = [live01, live03, live04, live05, live06, live07]
           </div>
         </figure>
 
-        <figure class="col-span-6 md:col-span-4 md:mt-8">
+        <figure class="md:shrink-0 col-span-6 md:col-span-4 md:mt-8">
           <div
-            class="relative aspect-[4/5] overflow-hidden shadow-2xl ring-1 ring-white/10 md:rotate-[1deg]"
+            class="relative aspect-[4/5] overflow-hidden md:h-[50vh] md:w-auto shadow-2xl ring-1 ring-white/10 md:rotate-[1deg]"
           >
             <Image
               src={gallery[5]}
