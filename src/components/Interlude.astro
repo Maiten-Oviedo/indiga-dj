@@ -3,18 +3,16 @@ import { Image } from 'astro:assets'
 import portraitEyes from '../assets/img/portrait-eyes.jpg'
 ---
 
-<section id="interlude-section" class="relative py-20 md:py-28">
-  <!-- portrait-eyes centrada -->
-  <div class="relative mx-auto max-w-4xl px-6 md:px-12">
-    <div class="relative aspect-[21/9] overflow-hidden shadow-2xl ring-1 ring-white/10">
-      <Image
-        src={portraitEyes}
-        alt=""
-        class="h-full w-full object-cover object-center"
-        widths={[800, 1200, 1600]}
-        sizes="(min-width: 768px) 70vw, 90vw"
-        loading="lazy"
-      />
-    </div>
+<!-- "Los ojos se abren": Animations.astro pinea la sección y anima el clip-path de #eyes -->
+<section id="interlude-section" class="relative h-svh overflow-hidden">
+  <div id="eyes" class="absolute inset-0">
+    <Image
+      src={portraitEyes}
+      alt="Mirada de INDIGA"
+      class="h-full w-full object-contain"
+      widths={[800, 1600, 2400]}
+      sizes="100vw"
+      loading="lazy"
+    />
   </div>
 </section>

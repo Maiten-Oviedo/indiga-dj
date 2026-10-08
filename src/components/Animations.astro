@@ -102,6 +102,39 @@
       );
     });
 
+    // Interlude: la mirada se abre desde una ranura sobre la línea de ojos, como un párpado.
+    // La foto (21:9, object-contain) queda como franja; los ojos están al 75% de su alto.
+    const EYE_LINE = 0.75;
+    const band = () => {
+      const h = Math.min(1, (innerWidth * 9) / 21 / innerHeight); // alto de la franja en % del viewport
+      const top = ((1 - h) / 2) * 100;
+      return { top, eye: top + EYE_LINE * h * 100 };
+    };
+    gsap
+      .timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: '#interlude-section',
+          start: 'top top',
+          end: '+=120%',
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      })
+      .fromTo(
+        '#eyes',
+        { clipPath: () => `inset(${band().eye - 0.4}% 35% ${100 - band().eye - 0.4}% 35%)` },
+        { clipPath: () => `inset(${band().top}% 0% ${band().top}% 0%)` },
+        0
+      )
+      .fromTo(
+        '#eyes img',
+        { scale: 1.2, transformOrigin: () => `50% ${band().eye}%` },
+        { scale: 1 },
+        0
+      );
+
     // LiveGrid: parallax fondo + entrada escalonada por figura
     const livegridSection = document.getElementById('livegrid-section');
     const livegridBg = document.getElementById('livegrid-bg');
