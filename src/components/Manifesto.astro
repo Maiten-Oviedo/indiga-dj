@@ -14,9 +14,13 @@ import { manifesto } from '../data/presskit';
     <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
       Feel what I hear.
     </h2>
-    {manifesto.map((p) => (
-      <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">{p}</p>
-    ))}
+    <div data-reveal class="flex flex-col gap-8">
+      {manifesto.map((p) => (
+        <p class="max-w-md text-base md:text-lg leading-relaxed text-white">
+          {p.split(' ').map((w) => <span class="reveal-word">{w} </span>)}
+        </p>
+      ))}
+    </div>
   </div>
   <div class="relative min-h-[60vh] md:min-h-dvh">
     <Image

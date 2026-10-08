@@ -88,6 +88,20 @@
       });
     });
 
+    // Texto que se "enciende" palabra por palabra con el scroll
+    document.querySelectorAll('[data-reveal]').forEach((block) => {
+      gsap.fromTo(
+        block.querySelectorAll('.reveal-word'),
+        { opacity: 0.15 },
+        {
+          opacity: 1,
+          stagger: 0.1,
+          ease: 'none',
+          scrollTrigger: { trigger: block, start: 'top 80%', end: 'bottom 50%', scrub: true },
+        }
+      );
+    });
+
     // LiveGrid: parallax fondo + entrada escalonada por figura
     const livegridSection = document.getElementById('livegrid-section');
     const livegridBg = document.getElementById('livegrid-bg');
