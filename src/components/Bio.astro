@@ -24,8 +24,12 @@ import { bio } from '../data/presskit';
     <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
       Una narrativa<br />en evolución.
     </h2>
-    {bio.map((p) => (
-      <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">{p}</p>
-    ))}
+    <div data-reveal class="flex flex-col gap-8">
+      {bio.map((p) => (
+        <p class="max-w-md text-base md:text-lg leading-relaxed text-white">
+          {p.split(' ').map((w) => <span class="reveal-word">{w} </span>)}
+        </p>
+      ))}
+    </div>
   </div>
 </section>

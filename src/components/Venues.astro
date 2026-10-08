@@ -9,8 +9,8 @@ import { venues, artists, camino } from '../data/presskit';
   <h2 class="relative mt-4 font-serif text-4xl leading-tight md:text-5xl lg:text-6xl">
     Espacios y voces<br />compartidas.
   </h2>
-  <p class="relative mt-12 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
-    {camino}
+  <p data-reveal class="relative mt-12 max-w-2xl text-base leading-relaxed text-white md:text-lg">
+    {camino.split(' ').map((w) => <span class="reveal-word">{w} </span>)}
   </p>
 
   <div class="relative mt-20 grid grid-cols-1 gap-12 border-t border-white/10 pt-16 md:grid-cols-2 md:gap-16">
