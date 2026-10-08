@@ -3,9 +3,19 @@ import { Image } from 'astro:assets'
 import portraitEyes from '../assets/img/portrait-eyes.jpg'
 ---
 
-<!-- "Los ojos se abren": Animations.astro pinea la sección y anima el clip-path de #eyes -->
-<section id="interlude-section" class="relative h-svh overflow-hidden">
-  <div id="eyes" class="absolute inset-0">
+<!--
+  "Los ojos se abren" (Animations.astro): una señal de luz baja desde Camino,
+  toca la línea de los ojos, se vuelve ranura y la mirada se abre.
+  Sin overflow-hidden: la señal asoma por arriba, dentro de Camino.
+-->
+<section id="interlude-section" class="relative h-svh">
+  <div
+    id="eyes-line"
+    aria-hidden="true"
+    class="pointer-events-none absolute left-1/2 z-10 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-white/40 to-white opacity-0 shadow-[0_0_12px_1px_rgba(129,140,248,0.9)]"
+  >
+  </div>
+  <div id="eyes" class="absolute inset-0 overflow-hidden">
     <Image
       src={portraitEyes}
       alt="Mirada de INDIGA"
