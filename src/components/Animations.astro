@@ -56,21 +56,37 @@
       });
     }
 
-    const heroSection = document.querySelector('section');
+    const heroSection = document.getElementById('hero-section');
     const heroBg = document.getElementById('hero-bg');
+    const mm = gsap.matchMedia();
 
-    if (heroSection && heroBg) {
+    // Hero desktop: pin + capas a distinta velocidad (fondo se aleja, Cele avanza)
+    mm.add('(min-width: 768px)', () => {
+      gsap
+        .timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: '+=80%',
+            pin: true,
+            scrub: 1,
+          },
+        })
+        .to(heroBg, { scale: 1.12, opacity: 0.08 }, 0)
+        .to('#hero-word', { scale: 0.86, yPercent: -6, opacity: 0.35 }, 0)
+        .to('#hero-cutout img', { scale: 1.1, yPercent: -4, transformOrigin: '50% 100%' }, 0)
+        .to('#hero-section header', { opacity: 0, yPercent: -40 }, 0);
+    });
+
+    // Hero mobile: parallax simple
+    mm.add('(max-width: 767px)', () => {
       gsap.to(heroBg, {
         y: '10%',
         ease: 'none',
-        scrollTrigger: {
-          trigger: heroSection,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
+        scrollTrigger: { trigger: heroSection, start: 'top top', end: 'bottom top', scrub: 1.2 },
       });
-    }
+    });
 
     // LiveGrid: parallax fondo + entrada escalonada por figura
     const livegridSection = document.getElementById('livegrid-section');

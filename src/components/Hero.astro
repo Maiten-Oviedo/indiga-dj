@@ -4,7 +4,7 @@ import hero from '../assets/img/hero.jpg';
 import heroCutout from '../assets/img/hero-no-back.png';
 ---
 
-<section class="relative min-h-dvh overflow-hidden">
+<section id="hero-section" class="relative min-h-dvh overflow-hidden">
   <!-- Fondo: en mobile normal, en desktop muy oscurecido -->
   <Image
     id="hero-bg"
@@ -56,6 +56,7 @@ import heroCutout from '../assets/img/hero-no-back.png';
 
   <!-- Desktop only: INDIGA centrado detrás del recorte (z-10) -->
   <div
+    id="hero-word"
     class="pointer-events-none absolute inset-0 z-10 hidden select-none md:flex md:items-start md:justify-center md:pt-[18vh]"
     aria-hidden="true"
   >
