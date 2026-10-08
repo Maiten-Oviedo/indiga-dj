@@ -1,11 +1,30 @@
 ---
+import { Image } from 'astro:assets';
+import closing from '../assets/img/crowd-02.jpg';
 import { contact } from '../data/presskit';
 
 const { email, instagram, soundcloud } = contact;
 const showPdfDownload = true;
 ---
 
-<section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
+<section id="contact-section" class="relative overflow-hidden px-6 pt-24 md:px-12 md:pt-32 lg:pt-40">
+  <!-- Fondo de cierre: cabina + logo en pantalla; se aleja con el scroll (Animations.astro) -->
+  <div class="absolute inset-0 -z-10 overflow-hidden">
+    <Image
+      id="contact-bg"
+      src={closing}
+      alt=""
+      class="h-full w-full object-cover object-[center_30%] opacity-60"
+      widths={[1200, 1920]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(180deg, #08080f 0%, rgba(8,8,15,0.7) 35%, rgba(8,8,15,0.75) 70%, #08080f 100%);"
+    >
+    </div>
+  </div>
 
   <p
     class="relative text-xs font-bold uppercase tracking-[0.3em] text-white/50"
@@ -27,9 +46,9 @@ const showPdfDownload = true;
       </p>
       <a
         href={`mailto:${email}`}
-        class="mt-6 inline-block break-all font-serif text-2xl md:text-3xl underline-offset-8 hover:underline"
+        class="mt-6 inline-block break-all font-serif text-2xl md:text-3xl"
       >
-        {email}
+        <span class="link-draw">{email}</span>
       </a>
     </div>
 
@@ -43,9 +62,9 @@ const showPdfDownload = true;
             href={instagram}
             target="_blank"
             rel="noopener"
-            class="group inline-flex items-baseline gap-4 font-serif text-2xl md:text-3xl underline-offset-8 hover:underline"
+            class="group inline-flex items-baseline gap-4 font-serif text-2xl md:text-3xl"
           >
-            Instagram
+            <span class="link-draw">Instagram</span>
             <span
               class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 transition-colors group-hover:text-white/80"
             >
@@ -58,9 +77,9 @@ const showPdfDownload = true;
             href={soundcloud}
             target="_blank"
             rel="noopener"
-            class="group inline-flex items-baseline gap-4 font-serif text-2xl md:text-3xl underline-offset-8 hover:underline"
+            class="group inline-flex items-baseline gap-4 font-serif text-2xl md:text-3xl"
           >
-            SoundCloud
+            <span class="link-draw">SoundCloud</span>
             <span
               class="font-sans text-xs uppercase tracking-[0.2em] text-white/40 transition-colors group-hover:text-white/80"
             >
@@ -107,4 +126,14 @@ const showPdfDownload = true;
       </a>
     )
   }
+
+  <!-- Cierre: el wordmark del hero vuelve, letra por letra (Animations.astro) -->
+  <p
+    id="closing-word"
+    aria-hidden="true"
+    class="relative mt-24 flex select-none justify-center overflow-hidden font-serif font-bold leading-[0.85] tracking-tight md:mt-32"
+    style="font-size: clamp(4.5rem, 21vw, 21rem);"
+  >
+    {'INDIGA'.split('').map((l) => <span class="inline-block">{l}</span>)}
+  </p>
 </section>

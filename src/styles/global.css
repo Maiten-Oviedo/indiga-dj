@@ -28,3 +28,13 @@ html {
 .mask-line > span {
   display: inline-block;
 }
+
+/* Subrayado que se dibuja de izquierda a derecha al pasar el mouse */
+.link-draw {
+  background: linear-gradient(currentColor, currentColor) left bottom / 0% 1px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.5s ease;
+}
+a:hover .link-draw {
+  background-size: 100% 1px;
+}

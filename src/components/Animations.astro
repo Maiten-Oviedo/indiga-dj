@@ -254,6 +254,50 @@
         0
       );
 
+    // Setup: parallax del fondo, barrido de la ficha técnica y equipo en cascada
+    gsap.to('#setup-bg', {
+      y: '8%',
+      ease: 'none',
+      scrollTrigger: { trigger: '#setup-section', start: 'top bottom', end: 'bottom top', scrub: 2.5 },
+    });
+    gsap.fromTo(
+      '[data-wipe]',
+      { clipPath: 'inset(0% 100% 0% 0%)' },
+      {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        ease: 'none',
+        scrollTrigger: { trigger: '[data-wipe]', start: 'top 85%', end: 'top 35%', scrub: 1 },
+      }
+    );
+    document.querySelectorAll('[data-cascade]').forEach((list) => {
+      gsap.from(list.children, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: list, start: 'top 85%', once: true },
+      });
+    });
+
+    // Contacto: el fondo se aleja hasta el final y el wordmark vuelve letra por letra
+    gsap.fromTo(
+      '#contact-bg',
+      { scale: 1.15 },
+      {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: { trigger: '#contact-section', start: 'top bottom', end: 'bottom bottom', scrub: true },
+      }
+    );
+    gsap.from('#closing-word span', {
+      yPercent: 110,
+      duration: 1.2,
+      stagger: 0.07,
+      ease: 'power4.out',
+      scrollTrigger: { trigger: '#closing-word', start: 'top 95%', once: true },
+    });
+
     const sections = Array.from(document.querySelectorAll('section'))
       .slice(1)
       .filter((s) => s.id !== 'livegrid-section' && s.id !== 'interlude-section');
