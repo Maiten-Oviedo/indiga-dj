@@ -3,6 +3,7 @@ import '../styles/global.css'
 import AudioPlayer from '../components/AudioPlayer.astro'
 import Animations from '../components/Animations.astro'
 import Analytics from '@vercel/analytics/astro'
+import { contact } from '../data/presskit'
 
 interface Props {
   title: string
@@ -28,11 +29,8 @@ const personSchema = {
   jobTitle: 'DJ',
   url: Astro.site?.toString(),
   image: ogImage,
-  email: 'psymania.ar@gmail.com',
-  sameAs: [
-    'https://www.instagram.com/indiga_____/',
-    'https://on.soundcloud.com/OwR1GW94sVT65zVWKd',
-  ],
+  email: contact.email,
+  sameAs: [contact.instagram, contact.soundcloud],
 }
 ---
 

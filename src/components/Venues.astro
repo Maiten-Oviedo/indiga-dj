@@ -1,13 +1,5 @@
 ---
-const venues = ['Club Paraguay', 'Europa', 'Negroni', 'Black Sheep', '990 Arte Club', 'Fruta'];
-const artists = [
-  'Perception (Brasil)',
-  'Wav3motion (Brasil)',
-  'Julianna Gella',
-  'Delcha',
-  'Zlata',
-  'Zahar (Brasil)',
-];
+import { venues, artists, camino } from '../data/presskit';
 ---
 
 <section class="relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:py-40">
@@ -26,11 +18,7 @@ const artists = [
     Espacios y voces<br />compartidas.
   </h2>
   <p class="relative mt-12 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
-    Desde sus primeras presentaciones, INDIGA ha desarrollado una propuesta en
-    constante evolución, explorando distintos escenarios y compartiendo cabina
-    con artistas nacionales e internacionales. Cada experiencia ha contribuido
-    a fortalecer una identidad artística que continúa creciendo con cada nueva
-    oportunidad y a seguir construyendo un camino propio dentro de la escena.
+    {camino}
   </p>
 
   <div class="relative mt-20 grid grid-cols-1 gap-12 border-t border-white/10 pt-16 md:grid-cols-2 md:gap-16">

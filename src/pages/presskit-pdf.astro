@@ -1,0 +1,221 @@
+---
+// Versión impresa del presskit. No se linkea: `pnpm pdf` la abre con Playwright
+// y la exporta a public/presskit/indiga-presskit.pdf.
+import '../styles/global.css'
+import { Image } from 'astro:assets'
+import hero from '../assets/img/hero.jpg'
+import portrait01 from '../assets/img/portrait-01.jpg'
+import portrait02 from '../assets/img/portrait-02.jpg'
+import portraitEyes from '../assets/img/portrait-eyes.jpg'
+import crowd from '../assets/img/crowd-02.jpg'
+import live01 from '../assets/img/live-01.jpg'
+import live03 from '../assets/img/live-03.jpg'
+import live04 from '../assets/img/live-04.jpg'
+import live05 from '../assets/img/live-05.jpg'
+import live06 from '../assets/img/live-06.jpg'
+import live07 from '../assets/img/live-07.jpg'
+import {
+  contact,
+  genres,
+  manifesto,
+  bio,
+  camino,
+  venues,
+  artists,
+  videos,
+  equipment,
+} from '../data/presskit'
+
+const gallery = [live01, live03, live04, live05, live06, live07]
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>INDIGA — Presskit 2026</title>
+  </head>
+  <body>
+    <!-- 01 · Portada -->
+    <section class="page">
+      <Image format="jpg" quality={75} src={hero} alt="" width={1240} class="absolute inset-0 h-full w-full object-cover object-[center_25%]" />
+      <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(8,8,15,0.55) 0%, rgba(8,8,15,0.1) 40%, rgba(8,8,15,0.95) 100%);"></div>
+      <header class="relative flex items-start justify-between p-12 text-xs font-bold uppercase tracking-[0.2em]">
+        <p class="leading-tight">Feel what I<br />hear.</p>
+        <p class="text-right leading-tight">Presskit<br />2026</p>
+      </header>
+      <div class="absolute inset-x-0 bottom-0 p-12">
+        <h1 class="font-serif text-[9rem] font-bold leading-[0.85] tracking-tight">INDIGA</h1>
+        <p class="mt-6 text-xs font-bold uppercase tracking-[0.3em] text-white/60">DJ · {genres.join(' · ')}</p>
+      </div>
+    </section>
+
+    <!-- 02 · Manifesto -->
+    <section class="page flex flex-col">
+      <div class="relative h-[55%]">
+        <Image format="jpg" quality={75} src={portrait01} alt="" width={1240} class="h-full w-full object-cover" />
+      </div>
+      <div class="flex flex-1 flex-col justify-center gap-5 px-14">
+        <p class="label">01 — Manifesto</p>
+        <h2 class="font-serif text-5xl leading-tight">Feel what I hear.</h2>
+        {manifesto.map((p) => <p class="body">{p}</p>)}
+      </div>
+    </section>
+
+    <!-- 03 · Bio -->
+    <section class="page flex flex-col">
+      <div class="flex flex-1 flex-col justify-center gap-5 px-14">
+        <p class="label">02 — Bio</p>
+        <h2 class="font-serif text-5xl leading-tight">Una narrativa<br />en evolución.</h2>
+        {bio.map((p) => <p class="body">{p}</p>)}
+      </div>
+      <div class="relative h-[48%]">
+        <Image format="jpg" quality={75} src={portrait02} alt="" width={1240} class="h-full w-full object-cover" />
+      </div>
+    </section>
+
+    <!-- 04 · En cabina -->
+    <section class="page px-12 py-14">
+      <p class="label">03 — En cabina</p>
+      <h2 class="mt-3 font-serif text-5xl leading-tight">La pista<br />como lenguaje.</h2>
+      <div class="mt-10 grid grid-cols-2 gap-4">
+        {gallery.map((img, i) => (
+          <div class:list={['aspect-[4/3] overflow-hidden ring-1 ring-white/10', i % 2 ? 'rotate-[1deg]' : '-rotate-[1deg]']}>
+            <Image format="jpg" quality={75} src={img} alt="" width={700} class="h-full w-full object-cover" />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 05 · Camino -->
+    <section class="page flex flex-col">
+      <div class="relative h-[32%]">
+        <Image format="jpg" quality={75} src={crowd} alt="" width={1240} class="h-full w-full object-cover opacity-70" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent 40%, #08080f 100%);"></div>
+      </div>
+      <div class="flex-1 px-14 pt-4">
+        <p class="label">04 — Camino</p>
+        <h2 class="mt-3 font-serif text-5xl leading-tight">Espacios y voces<br />compartidas.</h2>
+        <p class="body mt-6">{camino}</p>
+        <div class="mt-10 grid grid-cols-2 gap-10 border-t border-white/10 pt-8">
+          <div>
+            <p class="label text-white/40">Cabinas</p>
+            <ul class="mt-4 space-y-2 font-serif text-2xl">{venues.map((v) => <li>{v}</li>)}</ul>
+          </div>
+          <div>
+            <p class="label text-white/40">Compartió cabina</p>
+            <ul class="mt-4 space-y-2 font-serif text-2xl">{artists.map((a) => <li>{a}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · Sets + Setup -->
+    <section class="page px-12 py-14">
+      <p class="label">05 — Sets</p>
+      <h2 class="mt-3 font-serif text-5xl leading-tight">En vivo, en cabina.</h2>
+      <div class="mt-8 grid grid-cols-3 gap-4">
+        {videos.map((v, i) => (
+          <a href={`https://youtu.be/${v.id}`} class="block">
+            <div class="relative aspect-video overflow-hidden ring-1 ring-white/10">
+              <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" class="h-full w-full object-cover" />
+              <span class="absolute inset-0 flex items-center justify-center">
+                <span class="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-black/40 pl-0.5 text-xs">▶</span>
+              </span>
+            </div>
+            <p class="mt-2 text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">Set 0{i + 1}</p>
+            <p class="font-serif text-sm leading-snug">x {v.label}</p>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-12 border-t border-white/10 pt-10">
+        <p class="label">06 — Setup</p>
+        <h2 class="mt-3 font-serif text-4xl leading-tight">Requisitos técnicos.</h2>
+        <img src="/img/setup.jpg" alt="" class="mt-8 aspect-[2/1] w-full object-cover" />
+        <ul class="mt-8 grid grid-cols-3 gap-6">
+          {equipment.map((item) => (
+            <li>
+              <p class="label text-white/40">{item.label}</p>
+              <p class="mt-1 font-serif text-lg leading-tight">{item.primary}</p>
+              {item.alt && <p class="mt-0.5 text-xs text-white/50">{item.alt}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 07 · Contacto -->
+    <section class="page flex flex-col px-12 py-14">
+      <p class="label">07 — Contacto</p>
+      <h2 class="mt-3 font-serif text-5xl leading-tight">Bookings<br />y enlaces.</h2>
+      <div class="mt-10 aspect-[21/9] overflow-hidden ring-1 ring-white/10">
+        <Image format="jpg" quality={75} src={portraitEyes} alt="" width={1240} class="h-full w-full object-cover" />
+      </div>
+      <div class="mt-12 grid grid-cols-2 gap-10 border-t border-white/10 pt-10">
+        <div>
+          <p class="label text-white/40">Bookings</p>
+          <a href={`mailto:${contact.email}`} class="mt-4 block font-serif text-2xl">{contact.email}</a>
+        </div>
+        <div>
+          <p class="label text-white/40">Redes</p>
+          <ul class="mt-4 space-y-3 font-serif text-2xl">
+            <li><a href={contact.instagram}>Instagram <span class="font-sans text-xs tracking-[0.2em] text-white/40">{contact.instagramHandle}</span></a></li>
+            <li><a href={contact.soundcloud}>SoundCloud</a></li>
+            <li><a href={contact.site}>Web <span class="font-sans text-xs tracking-[0.2em] text-white/40">indiga.vercel.app</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <footer class="mt-auto flex justify-between border-t border-white/10 pt-6 text-[9px] uppercase tracking-[0.3em] text-white/40">
+        <span>© INDIGA 2026</span>
+        <a href="https://maitendev.vercel.app">Designed by Maitén Oviedo</a>
+      </footer>
+    </section>
+  </body>
+</html>
+
+<style is:global>
+  /* ponytail: sin grain SVG ni blend modes; en PDF Chromium los rasteriza y engorda el archivo */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  html {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    background: var(--color-bg);
+    break-after: page;
+  }
+  @layer components {
+    .label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: rgb(255 255 255 / 0.5);
+    }
+    .body {
+      max-width: 34rem;
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgb(255 255 255 / 0.8);
+    }
+  }
+  @media screen {
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+      background: #1a1a22;
+    }
+  }
+</style>

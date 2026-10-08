@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import portrait from '../assets/img/portrait-01.jpg';
+import { manifesto } from '../data/presskit';
 ---
 
 <section class="relative grid min-h-dvh grid-cols-1 overflow-hidden md:grid-cols-2">
@@ -20,16 +21,9 @@ import portrait from '../assets/img/portrait-01.jpg';
     <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
       Feel what I hear.
     </h2>
-    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
-      Creo que cada sonido tiene la capacidad de despertar algo distinto en
-      quien lo escucha. Me interesa construir recorridos donde la música, las
-      texturas y la energía hablen por sí mismas, permitiendo que cada persona
-      viva el set desde un lugar diferente.
-    </p>
-    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
-      INDIGA nace de esa búsqueda constante por descubrir sonidos que
-      realmente me movilizan y convertir esa experiencia en algo compartido.
-    </p>
+    {manifesto.map((p) => (
+      <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">{p}</p>
+    ))}
   </div>
   <div class="relative min-h-[60vh] md:min-h-dvh">
     <Image

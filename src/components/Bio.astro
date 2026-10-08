@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import portrait from '../assets/img/portrait-02.jpg';
+import { bio } from '../data/presskit';
 ---
 
 <section class="relative grid min-h-dvh grid-cols-1 overflow-hidden md:grid-cols-2">
@@ -30,21 +31,8 @@ import portrait from '../assets/img/portrait-02.jpg';
     <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight">
       Una narrativa<br />en evolución.
     </h2>
-    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
-      Influenciada por el psytrance, el trance, el hard dance y el techno, su
-      propuesta construye recorridos que alternan momentos hipnóticos,
-      melodías envolventes y descargas de energía.
-    </p>
-    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
-      Su criterio musical parte de una premisa simple: compartir aquellos
-      sonidos que la atraviesan personalmente y transformar esa experiencia en
-      un lenguaje colectivo dentro de la pista.
-    </p>
-    <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">
-      Más que responder a un género específico, sus selecciones buscan
-      transmitir sensaciones y mantener una narrativa en constante evolución.
-      Para INDIGA, la conexión con el público aparece cuando una misma
-      frecuencia logra resonar en distintas personas al mismo tiempo.
-    </p>
+    {bio.map((p) => (
+      <p class="max-w-md text-base md:text-lg leading-relaxed text-white/80">{p}</p>
+    ))}
   </div>
 </section>
