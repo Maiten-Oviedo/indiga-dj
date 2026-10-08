@@ -187,8 +187,10 @@
     // franja; los ojos están al 75% de su alto.
     const EYE_LINE = 0.75;
     const LINE_REACH = 120; // px que la señal asoma dentro de Camino
+    const interlude = document.getElementById('interlude-section')!;
     const band = () => {
-      const h = Math.min(1, (innerWidth * 9) / 21 / innerHeight); // alto de la franja en % del viewport
+      // alto de la franja en % de la sección (en mobile la sección mide medio viewport)
+      const h = Math.min(1, (interlude.offsetWidth * 9) / 21 / interlude.offsetHeight);
       const top = ((1 - h) / 2) * 100;
       return { top, eye: top + EYE_LINE * h * 100 };
     };
@@ -203,7 +205,7 @@
         scaleY: 0,
         transformOrigin: '50% 0%',
         top: -LINE_REACH,
-        height: () => LINE_REACH + (innerHeight * band().eye) / 100,
+        height: () => LINE_REACH + (interlude.offsetHeight * band().eye) / 100,
       },
       {
         scaleY: 1,
@@ -211,7 +213,7 @@
         scrollTrigger: {
           trigger: '#interlude-section',
           start: `top bottom+=${LINE_REACH}`,
-          end: 'top top',
+          end: 'center center',
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -224,7 +226,7 @@
         defaults: { ease: 'none' },
         scrollTrigger: {
           trigger: '#interlude-section',
-          start: 'top top',
+          start: 'center center', // en desktop (h-svh) equivale a 'top top'
           end: '+=120%',
           pin: true,
           refreshPriority: 1, // los pins se recalculan antes que el resto
