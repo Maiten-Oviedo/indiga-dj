@@ -18,3 +18,13 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Línea de título enmascarada (Animations.astro); padding para no cortar descendentes */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.mask-line > span {
+  display: inline-block;
+}

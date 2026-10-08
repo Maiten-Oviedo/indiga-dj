@@ -88,6 +88,21 @@
       });
     });
 
+    // Títulos: cada línea (separada por <br>) sube desde una máscara
+    document.querySelectorAll<HTMLElement>('section h2').forEach((h2) => {
+      h2.innerHTML = h2.innerHTML
+        .split(/<br\s*\/?>/i)
+        .map((line) => `<span class="mask-line"><span>${line.trim()}</span></span>`)
+        .join('');
+      gsap.from(h2.querySelectorAll('.mask-line > span'), {
+        yPercent: 110,
+        duration: 1.1,
+        stagger: 0.12,
+        ease: 'power4.out',
+        scrollTrigger: { trigger: h2, start: 'top 85%', once: true },
+      });
+    });
+
     // Texto que se "enciende" palabra por palabra con el scroll
     document.querySelectorAll('[data-reveal]').forEach((block) => {
       gsap.fromTo(
