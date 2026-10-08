@@ -226,26 +226,26 @@
         defaults: { ease: 'none' },
         scrollTrigger: {
           trigger: '#interlude-section',
-          start: 'center center', // en desktop (h-svh) equivale a 'top top'
-          end: '+=120%',
+          start: 'center center', // la sección mide menos que el viewport: pinea antes
+          end: '+=100%',
           pin: true,
           refreshPriority: 1, // los pins se recalculan antes que el resto
           scrub: 1,
           invalidateOnRefresh: true,
         },
       })
-      .fromTo('#eyes', { clipPath: () => slit(50) }, { clipPath: () => slit(35), duration: 0.25 }, 0)
-      .to('#eyes-line', { opacity: 0, duration: 0.2 }, 0.05)
+      .fromTo('#eyes', { clipPath: () => slit(50) }, { clipPath: () => slit(35), duration: 0.12 }, 0)
+      .to('#eyes-line', { opacity: 0, duration: 0.1 }, 0.02)
       // fromTo explícito: el navegador simplifica inset(a b c b) a 3 valores y un .to() desparejaría los números
       .fromTo(
         '#eyes',
         { clipPath: () => slit(35) },
         {
           clipPath: () => `inset(${band().top}% 0% ${band().top}% 0%)`,
-          duration: 0.75,
+          duration: 0.88,
           immediateRender: false,
         },
-        0.25
+        0.12
       )
       .fromTo(
         '#eyes img',
