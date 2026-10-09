@@ -28,6 +28,37 @@ import heroCutout from '../assets/img/hero-no-back.png';
     style="background: linear-gradient(180deg, #08080f 0%, rgba(8,8,15,0.2) 45%, rgba(8,8,15,0.85) 100%);"
   ></div>
 
+  <!--
+    Halo: la luz índigo de la foto, viva. Tres capas, un dueño cada una:
+    #hero-halo (scroll, GSAP) > .halo-breath (respira, CSS) > #hero-halo-beat (kick, JS).
+    Posición: sobre el foco de la foto en mobile; detrás de la cabeza del recorte en desktop.
+  -->
+  <div
+    id="hero-halo"
+    aria-hidden="true"
+    class="pointer-events-none absolute left-[65%] top-[22%] z-[5] aspect-square w-[120vw] -translate-x-1/2 -translate-y-1/2 mix-blend-screen md:left-[54%] md:top-[36%] md:w-[70vw]"
+  >
+    <div class="halo-breath absolute inset-0">
+      <div
+        id="hero-halo-beat"
+        class="absolute inset-0 rounded-full"
+        style="background: radial-gradient(circle, rgba(199,210,254,0.42) 0%, rgba(129,140,248,0.2) 30%, rgba(79,70,229,0.07) 55%, transparent 70%);"
+      >
+      </div>
+    </div>
+    <!-- Humo: dos manchas de luz difusa que derivan lento -->
+    <div
+      class="haze absolute left-[10%] top-[30%] h-1/2 w-3/5 rounded-full opacity-60 blur-3xl"
+      style="background: radial-gradient(circle, rgba(199,210,254,0.18), transparent 70%);"
+    >
+    </div>
+    <div
+      class="haze haze-alt absolute right-[5%] top-[15%] h-2/5 w-1/2 rounded-full opacity-50 blur-3xl"
+      style="background: radial-gradient(circle, rgba(165,180,252,0.16), transparent 70%);"
+    >
+    </div>
+  </div>
+
   <!-- Header: tagline izq + (mobile: h1 / desktop: presskit) der -->
   <header class="absolute inset-x-0 top-0 z-30 flex items-start justify-between p-6 md:p-12">
     <p
@@ -89,3 +120,42 @@ import heroCutout from '../assets/img/hero-no-back.png';
     Presskit<br />2026
   </footer>
 </section>
+
+<style>
+  /* La luz respira: ciclo lento, independiente del scroll y del kick */
+  .halo-breath {
+    animation: halo-breathe 7s ease-in-out infinite;
+  }
+  @keyframes halo-breathe {
+    0%,
+    100% {
+      transform: scale(0.92);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+  }
+  .haze {
+    animation: haze-drift 18s ease-in-out infinite alternate;
+  }
+  .haze-alt {
+    animation-duration: 23s;
+    animation-direction: alternate-reverse;
+  }
+  @keyframes haze-drift {
+    from {
+      transform: translate(-8%, 4%);
+    }
+    to {
+      transform: translate(8%, -5%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .halo-breath,
+    .haze {
+      animation: none;
+    }
+  }
+</style>

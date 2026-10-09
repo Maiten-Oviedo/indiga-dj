@@ -27,3 +27,6 @@ pnpm-debug.log*
 .agents/
 .claude/skills/
 .claude/settings.local.json
+
+# archivos de trabajo (fuentes para IA, no se publican)
+_work/

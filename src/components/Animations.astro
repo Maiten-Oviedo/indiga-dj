@@ -6,6 +6,7 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import Lenis from 'lenis';
   import 'lenis/dist/lenis.css';
+  import { isPlaying, kick } from '../lib/beat';
 
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -57,19 +58,42 @@
           },
         })
         .to(heroBg, { scale: 1.12, opacity: 0.08 }, 0)
+        .to('#hero-halo', { scale: 1.5, opacity: 0.35 }, 0) // la luz se abre y se apaga al irse
         .to('#hero-word', { scale: 0.86, yPercent: -6, opacity: 0.35 }, 0)
         .to('#hero-cutout img', { scale: 1.1, yPercent: -4, transformOrigin: '50% 100%' }, 0)
         .to('#hero-section header', { opacity: 0, yPercent: -40 }, 0);
     });
 
-    // Hero mobile: parallax simple
+    // Hero mobile: parallax simple (el halo acompaña a la foto: mismo desplazamiento en px)
     mm.add('(max-width: 767px)', () => {
-      gsap.to(heroBg, {
-        y: '10%',
+      gsap.to([heroBg, '#hero-halo'], {
+        y: () => (heroSection?.offsetHeight ?? 0) * 0.1,
         ease: 'none',
-        scrollTrigger: { trigger: heroSection, start: 'top top', end: 'bottom top', scrub: 1.2 },
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+        },
       });
     });
+
+    // Halo: con música, late con el kick (142 BPM). Solo corre mientras el hero está en pantalla.
+    const haloBeat = document.getElementById('hero-halo-beat');
+    if (heroSection && haloBeat) {
+      let raf = 0;
+      const tick = (ms: number) => {
+        const pulse = isPlaying() ? kick(ms / 1000) : 0;
+        haloBeat.style.transform = `scale(${1 + pulse * 0.06})`;
+        haloBeat.style.opacity = String(0.8 + pulse * 0.2);
+        raf = requestAnimationFrame(tick);
+      };
+      new IntersectionObserver(([e]) => {
+        cancelAnimationFrame(raf);
+        if (e.isIntersecting) raf = requestAnimationFrame(tick);
+      }).observe(heroSection);
+    }
 
     // Títulos: cada línea (separada por <br>) sube desde una máscara
     document.querySelectorAll<HTMLElement>('section h2').forEach((h2) => {

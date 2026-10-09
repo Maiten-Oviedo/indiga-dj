@@ -74,6 +74,7 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
 <script>
   import gsap from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { isPlaying, kick } from '../lib/beat'
 
   const svg = document.getElementById('fusion-wave')
   const paths = [...(svg?.querySelectorAll('path') ?? [])]
@@ -83,7 +84,6 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const POINTS = 140
-  const BEAT = 60 / 142 // segundos por negra a 142 BPM
   const layers = [
     { f1: 0.011, f2: 0.034, s1: 1.1, s2: 0.7, k: 0.55 },
     { f1: 0.017, f2: 0.026, s1: 1.6, s2: 1.2, k: 0.8 },
@@ -138,14 +138,13 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
         hint.style.opacity = ''
       }, 500)
     }
-    const isPlaying = () => !!document.querySelector('#audio-player .is-spinning')
 
     const tick = (ms: number) => {
       const t = ms / 1000
       const velocity = Math.abs(scrollY - lastY)
       lastY = scrollY
       const playing = isPlaying()
-      const pulse = playing ? Math.exp(-(t % BEAT) / 0.09) : 0 // 1 en el golpe, decae rápido
+      const pulse = playing ? kick(t) : 0
       const target = 6 + Math.min(80, velocity * 2.5) + (playing ? 22 : 0) + pulse * 70
       amp += (target - amp) * (pulse > 0.6 ? 0.5 : 0.12)
       draw(t, amp)
