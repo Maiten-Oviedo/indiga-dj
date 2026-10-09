@@ -64,24 +64,18 @@
         .to('#hero-section header', { opacity: 0, yPercent: -40 }, 0);
     });
 
-    // Hero mobile: parallax simple (el halo acompaña a la foto: mismo desplazamiento en px)
+    // Hero mobile: parallax simple
     mm.add('(max-width: 767px)', () => {
-      gsap.to([heroBg, '#hero-halo'], {
-        y: () => (heroSection?.offsetHeight ?? 0) * 0.1,
+      gsap.to(heroBg, {
+        y: '10%',
         ease: 'none',
-        scrollTrigger: {
-          trigger: heroSection,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.2,
-          invalidateOnRefresh: true,
-        },
+        scrollTrigger: { trigger: heroSection, start: 'top top', end: 'bottom top', scrub: 1.2 },
       });
     });
 
-    // Halo: con música, late con el kick (142 BPM). Solo corre mientras el hero está en pantalla.
+    // Halo (solo desktop): con música, late con el kick (142 BPM) mientras el hero está en pantalla.
     const haloBeat = document.getElementById('hero-halo-beat');
-    if (heroSection && haloBeat) {
+    if (heroSection && haloBeat && matchMedia('(min-width: 768px)').matches) {
       let raf = 0;
       const tick = (ms: number) => {
         const pulse = isPlaying() ? kick(ms / 1000) : 0;

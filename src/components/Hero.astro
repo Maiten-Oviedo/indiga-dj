@@ -31,12 +31,12 @@ import heroCutout from '../assets/img/hero-no-back.png';
   <!--
     Halo: la luz índigo de la foto, viva. Tres capas, un dueño cada una:
     #hero-halo (scroll, GSAP) > .halo-breath (respira, CSS) > #hero-halo-beat (kick, JS).
-    Posición: sobre el foco de la foto en mobile; detrás de la cabeza del recorte en desktop.
+    Solo desktop (detrás de la cabeza del recorte): en mobile la foto entera ya tiene su luz y el halo la apagaba.
   -->
   <div
     id="hero-halo"
     aria-hidden="true"
-    class="pointer-events-none absolute left-[65%] top-[22%] z-[5] aspect-square w-[120vw] -translate-x-1/2 -translate-y-1/2 mix-blend-screen md:left-[54%] md:top-[36%] md:w-[70vw]"
+    class="pointer-events-none absolute hidden left-[65%] top-[22%] z-[5] aspect-square w-[120vw] -translate-x-1/2 -translate-y-1/2 mix-blend-screen md:block md:left-[54%] md:top-[36%] md:w-[70vw]"
   >
     <div class="halo-breath absolute inset-0">
       <div
