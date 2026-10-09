@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# skills de agentes: se restauran con `npx skills experimental_install` desde skills-lock.json
+.agents/
+.claude/skills/
+.claude/settings.local.json
