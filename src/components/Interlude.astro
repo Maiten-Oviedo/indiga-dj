@@ -62,7 +62,7 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
     </svg>
   </div>
 
-  <!-- Pregunta y respuesta: sin música pregunta; con música responde la firma -->
+  <!-- La pregunta invita a dar play; mientras suena, desaparece -->
   <p
     id="fusion-hint"
     class="absolute bottom-[6%] left-6 right-24 text-[10px] font-bold uppercase tracking-[0.3em] text-white/50 transition-opacity duration-500 md:inset-x-0 md:text-center"
@@ -128,15 +128,9 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
     let amp = 6
     let lastY = scrollY
     let raf = 0
-    let wasPlaying = false
+    // La pregunta desaparece mientras suena (la respuesta es la mirada latiendo) y vuelve en pausa
     const setHint = (playing: boolean) => {
-      if (!hint || playing === wasPlaying) return
-      wasPlaying = playing
-      hint.style.opacity = '0'
-      setTimeout(() => {
-        hint.textContent = playing ? 'Feel what I hear.' : '¿Qué ves cuando escuchás? ↘'
-        hint.style.opacity = ''
-      }, 500)
+      if (hint) hint.style.opacity = playing ? '0' : ''
     }
 
     const tick = (ms: number) => {
