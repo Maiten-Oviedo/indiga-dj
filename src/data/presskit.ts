@@ -8,8 +8,6 @@ export const contact = {
   site: 'https://indiga.vercel.app',
 }
 
-export const genres = ['Psytrance', 'Trance', 'Hard dance', 'Techno']
-
 export const manifesto = [
   'Creo que cada sonido tiene la capacidad de despertar algo distinto en quien lo escucha. Me interesa construir recorridos donde la música, las texturas y la energía hablen por sí mismas, permitiendo que cada persona viva el set desde un lugar diferente.',
   'INDIGA nace de esa búsqueda constante por descubrir sonidos que realmente me movilizan y convertir esa experiencia en algo compartido.',
