@@ -1,0 +1,105 @@
+---
+// Opción B — "Frecuencia": la web también suena. Una señal luminosa de lado a lado
+// que reacciona a la velocidad del scroll y, si el reproductor está sonando,
+// pega al ritmo de un kick a 142 BPM (tempo psytrance).
+// ponytail: el pulso va al tempo, no al audio real — SoundCloud no expone el audio (CORS).
+import { manifesto } from '../data/presskit'
+
+const quote = manifesto[0].split('.')[0] + '.' // "Creo que cada sonido tiene la capacidad de despertar algo distinto en quien lo escucha."
+---
+
+<section
+  id="frecuencia"
+  data-no-fade
+  class="relative flex min-h-[85svh] flex-col items-center justify-center overflow-hidden px-6 py-24 md:min-h-svh md:px-12"
+>
+  <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/50">Frecuencia</p>
+
+  <p data-reveal class="mt-6 max-w-4xl text-center font-serif text-3xl leading-tight md:text-5xl lg:text-6xl">
+    {quote.split(' ').map((w) => <span class="reveal-word">{w} </span>)}
+  </p>
+
+  <div class="relative -mx-6 mt-12 h-[26svh] self-stretch md:-mx-12 md:mt-16 md:h-[34svh]" aria-hidden="true">
+    <svg id="wave" class="h-full w-full overflow-visible" viewBox="0 0 1000 300" preserveAspectRatio="none">
+      <path class="fill-none stroke-white/20" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path class="fill-none stroke-[#a5b4fc]/50" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path
+        class="fill-none stroke-white"
+        stroke-width="1.5"
+        vector-effect="non-scaling-stroke"
+        style="filter: drop-shadow(0 0 6px rgba(129,140,248,0.9));"></path>
+    </svg>
+  </div>
+
+  <p
+    id="wave-hint"
+    class="mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 transition-opacity duration-700"
+  >
+    Dale play ↘ y la señal se enciende
+  </p>
+</section>
+
+<script>
+  const svg = document.getElementById('wave')
+  const paths = [...(svg?.querySelectorAll('path') ?? [])]
+  const hint = document.getElementById('wave-hint')
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const POINTS = 140
+  const BEAT = 60 / 142 // segundos por negra a 142 BPM
+  const layers = [
+    { f1: 0.011, f2: 0.034, s1: 1.1, s2: 0.7, k: 0.55 },
+    { f1: 0.017, f2: 0.026, s1: 1.6, s2: 1.2, k: 0.8 },
+    { f1: 0.014, f2: 0.041, s1: 2.2, s2: 1.5, k: 1 },
+  ]
+
+  // La onda se apaga hacia los bordes, como una señal que nace y muere en la pantalla
+  const env = (x: number) => Math.pow(Math.sin((Math.PI * x) / 1000), 1.5)
+
+  const draw = (t: number, amp: number) => {
+    paths.forEach((path, i) => {
+      const l = layers[i]
+      let d = ''
+      for (let p = 0; p <= POINTS; p++) {
+        const x = (p / POINTS) * 1000
+        const y =
+          150 + amp * l.k * env(x) * (0.6 * Math.sin(x * l.f1 + t * l.s1 + i) + 0.4 * Math.sin(x * l.f2 - t * l.s2))
+        d += `${p ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`
+      }
+      path.setAttribute('d', d)
+    })
+  }
+
+  if (reduced) {
+    draw(0, 30)
+  } else if (svg) {
+    let amp = 6
+    let lastY = scrollY
+    let raf = 0
+    const isPlaying = () => !!document.querySelector('#audio-player .is-spinning')
+
+    const tick = (ms: number) => {
+      const t = ms / 1000
+      const velocity = Math.abs(scrollY - lastY)
+      lastY = scrollY
+      const playing = isPlaying()
+      // kick: golpe instantáneo que decae rápido en cada negra
+      const kick = playing ? Math.exp(-(t % BEAT) / 0.09) * 70 : 0
+      const target = 6 + Math.min(80, velocity * 2.5) + (playing ? 22 : 0) + kick
+      amp += (target - amp) * (kick > 40 ? 0.5 : 0.12) // el golpe entra rápido, el resto se suaviza
+      draw(t, amp)
+      if (hint) hint.style.opacity = playing ? '0' : ''
+      raf = requestAnimationFrame(tick)
+    }
+
+    // Solo anima mientras la sección está en pantalla
+    new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf)
+      if (e.isIntersecting) {
+        lastY = scrollY
+        raf = requestAnimationFrame(tick)
+      }
+    }).observe(svg)
+    draw(0, amp)
+  }
+</script>

@@ -169,77 +169,79 @@
     // franja; los ojos están al 75% de su alto.
     const EYE_LINE = 0.75;
     const LINE_REACH = 120; // px que la señal asoma dentro de Camino
-    const interlude = document.getElementById('interlude-section')!;
-    const band = () => {
-      // alto de la franja en % de la sección (en mobile la sección mide medio viewport)
-      const h = Math.min(1, (interlude.offsetWidth * 9) / 21 / interlude.offsetHeight);
-      const top = ((1 - h) / 2) * 100;
-      return { top, eye: top + EYE_LINE * h * 100 };
-    };
-    const slit = (side: number) =>
-      `inset(${band().eye - 0.4}% ${side}% ${100 - band().eye - 0.4}% ${side}%)`;
+    const interlude = document.getElementById('interlude-section');
+    if (interlude) {
+      const band = () => {
+        // alto de la franja en % de la sección (en mobile la sección mide medio viewport)
+        const h = Math.min(1, (interlude.offsetWidth * 9) / 21 / interlude.offsetHeight);
+        const top = ((1 - h) / 2) * 100;
+        return { top, eye: top + EYE_LINE * h * 100 };
+      };
+      const slit = (side: number) =>
+        `inset(${band().eye - 0.4}% ${side}% ${100 - band().eye - 0.4}% ${side}%)`;
 
-    // 1) La señal se dibuja hacia abajo mientras la sección entra
-    gsap.fromTo(
-      '#eyes-line',
-      {
-        opacity: 1,
-        scaleY: 0,
-        transformOrigin: '50% 0%',
-        top: -LINE_REACH,
-        height: () => LINE_REACH + (interlude.offsetHeight * band().eye) / 100,
-      },
-      {
-        scaleY: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '#interlude-section',
-          start: `top bottom+=${LINE_REACH}`,
-          end: 'center center',
-          scrub: 1,
-          invalidateOnRefresh: true,
+      // 1) La señal se dibuja hacia abajo mientras la sección entra
+      gsap.fromTo(
+        '#eyes-line',
+        {
+          opacity: 1,
+          scaleY: 0,
+          transformOrigin: '50% 0%',
+          top: -LINE_REACH,
+          height: () => LINE_REACH + (interlude.offsetHeight * band().eye) / 100,
         },
-      }
-    );
-
-    // 2) La señal se abre en ranura horizontal y después la mirada se abre.
-    // Desktop: con pin. Mobile: sin pin (fixed↔relative salta con el scroll táctil),
-    // la apertura acompaña a la franja mientras sube.
-    const openEyes = (trigger: ScrollTrigger.Vars) =>
-      gsap
-        .timeline({
-          defaults: { ease: 'none' },
+        {
+          scaleY: 1,
+          ease: 'none',
           scrollTrigger: {
             trigger: '#interlude-section',
-            start: 'center center',
+            start: `top bottom+=${LINE_REACH}`,
+            end: 'center center',
             scrub: 1,
             invalidateOnRefresh: true,
-            ...trigger,
           },
-        })
-        .fromTo('#eyes', { clipPath: () => slit(50) }, { clipPath: () => slit(35), duration: 0.12 }, 0)
-        .to('#eyes-line', { opacity: 0, duration: 0.1 }, 0.02)
-        // fromTo explícito: el navegador simplifica inset(a b c b) a 3 valores y un .to() desparejaría los números
-        .fromTo(
-          '#eyes',
-          { clipPath: () => slit(35) },
-          {
-            clipPath: () => `inset(${band().top}% 0% ${band().top}% 0%)`,
-            duration: 0.88,
-            immediateRender: false,
-          },
-          0.12
-        )
-        .fromTo(
-          '#eyes img',
-          { scale: 1.2, transformOrigin: () => `50% ${band().eye}%` },
-          { scale: 1, duration: 1 },
-          0
-        );
-    mm.add('(min-width: 768px)', () =>
-      openEyes({ end: '+=100%', pin: true, refreshPriority: 1 }) // los pins se recalculan antes que el resto
-    );
-    mm.add('(max-width: 767px)', () => openEyes({ end: 'center 15%' }));
+        }
+      );
+
+      // 2) La señal se abre en ranura horizontal y después la mirada se abre.
+      // Desktop: con pin. Mobile: sin pin (fixed↔relative salta con el scroll táctil),
+      // la apertura acompaña a la franja mientras sube.
+      const openEyes = (trigger: ScrollTrigger.Vars) =>
+        gsap
+          .timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: '#interlude-section',
+              start: 'center center',
+              scrub: 1,
+              invalidateOnRefresh: true,
+              ...trigger,
+            },
+          })
+          .fromTo('#eyes', { clipPath: () => slit(50) }, { clipPath: () => slit(35), duration: 0.12 }, 0)
+          .to('#eyes-line', { opacity: 0, duration: 0.1 }, 0.02)
+          // fromTo explícito: el navegador simplifica inset(a b c b) a 3 valores y un .to() desparejaría los números
+          .fromTo(
+            '#eyes',
+            { clipPath: () => slit(35) },
+            {
+              clipPath: () => `inset(${band().top}% 0% ${band().top}% 0%)`,
+              duration: 0.88,
+              immediateRender: false,
+            },
+            0.12
+          )
+          .fromTo(
+            '#eyes img',
+            { scale: 1.2, transformOrigin: () => `50% ${band().eye}%` },
+            { scale: 1, duration: 1 },
+            0
+          );
+      mm.add('(min-width: 768px)', () =>
+        openEyes({ end: '+=100%', pin: true, refreshPriority: 1 }) // los pins se recalculan antes que el resto
+      );
+      mm.add('(max-width: 767px)', () => openEyes({ end: 'center 15%' }));
+    }
 
     // Setup: parallax del fondo, barrido de la ficha técnica y equipo en cascada
     gsap.to('#setup-bg', {
@@ -287,7 +289,7 @@
 
     const sections = Array.from(document.querySelectorAll('section'))
       .slice(1)
-      .filter((s) => s.id !== 'livegrid-section' && s.id !== 'interlude-section');
+      .filter((s) => s.id !== 'livegrid-section' && s.id !== 'interlude-section' && !s.hasAttribute('data-no-fade'));
     sections.forEach((section) => {
       gsap.set(section, { opacity: 0, y: 40 });
       gsap.to(section, {

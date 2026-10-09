@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://indiga.vercel.app',
-  integrations: [sitemap({ filter: (page) => !page.includes('/presskit-pdf') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/presskit-pdf') && !page.includes('/opcion-') })],
   vite: {
     plugins: [tailwindcss()],
     server: {

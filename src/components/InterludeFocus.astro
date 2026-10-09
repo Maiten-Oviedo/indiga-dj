@@ -1,0 +1,84 @@
+---
+// Opción A — "Foco": la mirada como fondo a pantalla completa que entra en foco
+// con el scroll (rack focus) y vuelve a desenfocarse al irse.
+// Mobile: un solo ojo llena la pantalla (object-position sobre el ojo derecho).
+import { Image } from 'astro:assets'
+import portraitEyes from '../assets/img/portrait-eyes.jpg'
+
+// La foto es panorámica (3867×1176) con los ojos al 75% de su alto. Capa al 130% de alto y subida 47.5%:
+// la línea de ojos (0.75 × 130% − 47.5% = 50%) cae en el centro de la sección.
+// Horizontal: ojo derecho en mobile (51%), ambos ojos en desktop (33%).
+const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[51%_50%] md:object-[33%_50%]'
+---
+
+<section id="mirada" data-no-fade class="relative h-[90svh] overflow-hidden md:h-[115svh]">
+  <div
+    id="mirada-layers"
+    class="absolute inset-0 scale-110 will-change-transform"
+    style="mask-image: linear-gradient(180deg, #000 62%, transparent 84%);"
+  >
+    <!-- Capa desenfocada (el blur es estático: animar filter sería caro) -->
+    <Image src={portraitEyes} alt="" class={`${img} blur-[18px]`} widths={[800]} sizes="100vw" loading="lazy" />
+    <!-- Capa en foco: el "foco" es un crossfade de opacidad hacia esta -->
+    <Image
+      id="mirada-sharp"
+      src={portraitEyes}
+      alt="Mirada de INDIGA"
+      class={`${img} opacity-0`}
+      widths={[1600, 2400, 3867]}
+      sizes="(min-width: 768px) 310vw, 830vw"
+      loading="lazy"
+    />
+  </div>
+
+  <div id="mirada-shade" class="absolute inset-0 bg-[#08080f] opacity-70"></div>
+  <!-- Bordes fundidos con el fondo para que no haya corte con Camino ni Sets -->
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(180deg, #08080f 0%, transparent 22%, transparent 78%, #08080f 100%);"
+  >
+  </div>
+
+  <svg
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18] mix-blend-overlay"
+  >
+    <filter id="grain-mirada">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-mirada)"></rect>
+  </svg>
+
+  <p
+    id="mirada-caption"
+    class="absolute bottom-[14%] left-6 text-xs font-bold uppercase tracking-[0.3em] text-white/70 md:left-12"
+  >
+    Feel what I hear.
+  </p>
+</section>
+
+<script>
+  import gsap from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger)
+    gsap
+      .timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: '#mirada', start: 'top bottom', end: 'bottom top', scrub: 1 },
+      })
+      // entra: se acerca, se aclara y entra en foco (llega al foco con la sección centrada)
+      .fromTo('#mirada-layers', { scale: 1.18 }, { scale: 1, duration: 0.5 }, 0)
+      .fromTo('#mirada-sharp', { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.1)
+      .fromTo('#mirada-shade', { opacity: 0.8 }, { opacity: 0.25, duration: 0.4 }, 0.1)
+      .fromTo('#mirada-caption', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.15 }, 0.4)
+      // se va: vuelve a desenfocarse y oscurecerse
+      .to('#mirada-sharp', { opacity: 0.2, duration: 0.35 }, 0.65)
+      .to('#mirada-shade', { opacity: 0.7, duration: 0.35 }, 0.65)
+  } else {
+    gsap.set(['#mirada-sharp'], { opacity: 1 })
+    gsap.set('#mirada-shade', { opacity: 0.3 })
+  }
+</script>
