@@ -62,12 +62,12 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
     </svg>
   </div>
 
-  <!-- Una sola línea: invita a dar play; con música, pasa a la firma -->
+  <!-- Pregunta y respuesta: sin música pregunta; con música responde la firma -->
   <p
     id="fusion-hint"
     class="absolute bottom-[6%] left-6 right-24 text-[10px] font-bold uppercase tracking-[0.3em] text-white/50 transition-opacity duration-500 md:inset-x-0 md:text-center"
   >
-    Dale play ↘ y mirá lo que escucha
+    ¿Qué ves cuando escuchás? ↘
   </p>
 </section>
 
@@ -134,7 +134,7 @@ const img = 'absolute left-0 top-[-47.5%] h-[130%] w-full object-cover object-[5
       wasPlaying = playing
       hint.style.opacity = '0'
       setTimeout(() => {
-        hint.textContent = playing ? 'Feel what I hear.' : 'Dale play ↘ y mirá lo que escucha'
+        hint.textContent = playing ? 'Feel what I hear.' : '¿Qué ves cuando escuchás? ↘'
         hint.style.opacity = ''
       }, 500)
     }
